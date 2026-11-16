@@ -1,24 +1,13 @@
-import { APITester } from "./APITester";
-import "./index.css";
+import { useState } from 'react';
+import { MyVacationBank } from './views/MyVacationBank';
+import { BookVacationView } from './views/BookVacationView';
 
-import logo from "./logo.svg";
-import reactLogo from "./react.svg";
+export default function App() {
+    const [showBooking, setShowBooking] = useState(false);
 
-export function App() {
-  return (
-    <div className="app">
-      <div className="logo-container">
-        <img src={logo} alt="Bun Logo" className="logo bun-logo" />
-        <img src={reactLogo} alt="React Logo" className="logo react-logo" />
-      </div>
+    if (showBooking) {
+        return <BookVacationView onBackToOverview={() => setShowBooking(false)} />;
+    }
 
-      <h1>Bun + React</h1>
-      <p>
-        Edit <code>src/App.tsx</code> and save to test HMR
-      </p>
-      <APITester />
-    </div>
-  );
+    return <MyVacationBank onBookVacation={() => setShowBooking(true)} />;
 }
-
-export default App;

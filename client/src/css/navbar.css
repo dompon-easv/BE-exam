@@ -1,0 +1,158 @@
+/* Layout & Container */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--nav-dark, #192636);
+    color: var(--text-light, #ffffff);
+    padding: 0.75rem 2.5rem;
+    width: 100%;
+}
+
+.navbar-user {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.navbar-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: var(--primary-salmon, #dd7c6c);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.navbar-avatar .icon-user-circle {
+    background-color: var(--text-light, #ffffff);
+    width: 22px;
+    height: 22px;
+}
+
+.navbar-user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.navbar-username {
+    font-family: var(--font-serif, "Playfair Display", Georgia, serif);
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.15;
+}
+
+.navbar-role {
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted, #a0a6af);
+    margin-top: 2px;
+}
+
+/* Action Items */
+.navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+}
+
+.navbar-pill-btn {
+    background: transparent;
+    border: 1px solid var(--nav-border, #2d3b4d);
+    color: var(--text-light, #ffffff);
+    padding: 0.45rem 0.95rem;
+    border-radius: var(--radius-sm, 6px);
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.navbar-pill-btn:hover {
+    border-color: var(--primary-salmon, #dd7c6c);
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.navbar-icon-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.navbar-icon-btn:hover .icon {
+    background-color: var(--text-light, #ffffff);
+}
+
+.navbar-notification-container {
+    position: relative;
+}
+
+.navbar-badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    background-color: var(--primary-salmon, #dd7c6c);
+    color: var(--text-light, #ffffff);
+    font-size: 0.6rem;
+    font-weight: 700;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--nav-dark, #192636);
+}
+
+/* CSS-Only Mask Icons */
+.icon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-color: var(--text-muted, #a0a6af);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+}
+
+.navbar-pill-btn .icon {
+    background-color: var(--text-light, #ffffff);
+}
+
+.icon-user-circle {
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>');
+    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>');
+}
+
+.icon-management {
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>');
+    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>');
+}
+
+.icon-calendar {
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>');
+    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>');
+}
+
+.icon-bell {
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>');
+    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>');
+}
+
+.icon-logout {
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>');
+    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>');
+}
