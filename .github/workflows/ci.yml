@@ -1,0 +1,51 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [master]
+  pull_request: 
+    branches: [master]
+    
+jobs:
+  backend-ci:
+    name: Backend Build and Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check out repository source code
+        uses: actions/checkout@v4
+      
+      - name: Set up .NET 10 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+          
+      - name: Restore NuGet dependencies
+        run: dotnet restore BE-exam.slnx
+        
+      - name: Compile sln without restoring
+        run: dotnet build BE-exam.slnx --no-restore --configuration Release
+        
+      - name: Execute test suites
+        run: dotnet test BE-exam.slnx --no-build --configuration Release --verbosity normal
+        
+  frontend-ci:
+    name: Frontend Build & Typecheck (Bun & React)
+    runs-on: ubuntu-latest
+          
+    steps:
+      - name: Check out repository source code
+        uses: actions/checkout@v4
+
+      - name: Set up Bun runtime environment
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install client dependencies
+        working-directory: ./client
+        run: bun install --frozen-lockfile
+
+      - name: Run TypeScript typecheck and production build
+        working-directory: ./client
+        run: bun run build         
