@@ -2,8 +2,9 @@
   <Folder Name="/server/">
     <Project Path="server/infra/infra.csproj" />
     <Project Path="server/service/service.csproj" />
+    <Project Path="server/IntegrationTests/integrationTests.csproj" />
   </Folder>
-  <Folder Name="/server/API/">
-    <Project Path="server/API/api.csproj" />
+  <Folder Name="/server/api/">
+    <Project Path="server/api/api.csproj" />
   </Folder>
 </Solution>
