@@ -4,7 +4,11 @@ using LinqToDB.Data;
 
 namespace infra.data;
 
-public class AppDataConnection(DataOptions options) : DataConnection(options)
+public class AppDataConnection : DataConnection
 {
+    public AppDataConnection(DataOptions<AppDataConnection> options) : base(options.Options)
+    {
+    }
+
     public ITable<User> Users => this.GetTable<User>();
 }

@@ -5,12 +5,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="linq2db.AspNet" Version="5.4.1.9" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.0" />
+    <PackageReference Include="NSwag.AspNetCore" Version="14.8.0" />
   </ItemGroup>
 
   <PropertyGroup>
