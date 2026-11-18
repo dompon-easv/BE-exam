@@ -1,0 +1,176 @@
+.vacation-card-row {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    background-color: var(--bg-card, #ffffff);
+    border: 1.5px solid var(--border-card, #ece6df);
+    border-radius: var(--radius-md, 10px);
+    padding: 1.1rem 1.5rem;
+    box-shadow: var(--shadow-card, 0 4px 18px rgba(0, 0, 0, 0.04));
+    box-sizing: border-box;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.vacation-card-row:hover {
+    transform: translateY(-1px);
+    border-color: #ded6cb;
+}
+
+/* Left Accent Status Borders */
+.vacation-card-row.status-border-completed {
+    border-left: 4px solid #b8bfc6;
+}
+
+.vacation-card-row.status-border-upcoming {
+    border-left: 4px solid var(--nav-dark, #192636);
+}
+
+.vacation-card-row.status-border-pending {
+    border-left: 4px solid var(--primary-salmon, #dd7c6c);
+}
+
+/* 1. Date Stamp Badge */
+.vacation-date-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 62px;
+    height: 60px;
+    background-color: var(--bg-card-muted, #f8f4ee);
+    border: 1px solid var(--border-card, #ece6df);
+    border-radius: var(--radius-sm, 6px);
+    padding: 0.25rem 0.5rem;
+    box-sizing: border-box;
+}
+
+.badge-month {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--primary-salmon, #dd7c6c);
+}
+
+.badge-days {
+    font-family: var(--font-serif, "Playfair Display", Georgia, serif);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary, #1a1e24);
+    line-height: 1.1;
+}
+
+/* 2. Main Vacation Info */
+.vacation-main-info {
+    flex: 1 1 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.vacation-item-title {
+    font-family: var(--font-serif, "Playfair Display", Georgia, serif);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary, #1a1e24);
+    margin: 0;
+    line-height: 1.25;
+}
+
+.vacation-date-range {
+    font-size: 0.8rem;
+    color: var(--text-secondary, #747d88);
+    margin: 0;
+}
+
+/* 3. Metrics */
+.vacation-metrics-group {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-shrink: 0;
+}
+
+.metric-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 75px;
+}
+
+.metric-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted, #a0a6af);
+    font-weight: 700;
+}
+
+.metric-value {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary, #1a1e24);
+}
+
+/* 4. Status Indicator Slot */
+.vacation-status-slot {
+    min-width: 135px;
+    display: flex;
+    justify-content: flex-end;
+    flex-shrink: 0;
+}
+
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 9999px;
+    background-color: var(--bg-card-muted, #f8f4ee);
+    border: 1px solid var(--border-card, #ece6df);
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.status-dot.dot-completed {
+    background-color: #9aa4ae;
+}
+
+.status-dot.dot-upcoming {
+    background-color: var(--nav-dark, #192636);
+}
+
+.status-dot.dot-pending {
+    background-color: var(--primary-salmon, #dd7c6c);
+}
+
+.status-label-text {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-primary, #1a1e24);
+}
+
+/* Responsive adjustment for small viewports */
+@media (max-width: 768px) {
+    .vacation-card-row {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .vacation-metrics-group {
+        width: 100%;
+        justify-content: space-between;
+        padding-top: 0.5rem;
+        border-top: 1px solid var(--border-light, #ece7e1);
+    }
+
+    .vacation-status-slot {
+        width: 100%;
+        justify-content: flex-start;
+    }
+}

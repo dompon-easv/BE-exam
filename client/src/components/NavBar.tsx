@@ -1,77 +1,81 @@
 import '../css/navbar.css';
 
-interface NavbarProps {
+interface NavBarProps {
     userName?: string;
     role?: string;
-    notificationCount?: number;
-    onManagementClick?: () => void;
     onCalendarClick?: () => void;
-    onNotificationClick?: () => void;
+    onTeamClick?: () => void;
+    onContractsClick?: () => void;
     onLogoutClick?: () => void;
 }
 
-export function Navbar({
+export function NavBar({
                            userName = 'John Doe',
-                           role = 'ADMIN',
-                           notificationCount = 2,
-                           onManagementClick,
+                           role = 'EMPLOYEE',
                            onCalendarClick,
-                           onNotificationClick,
+                           onTeamClick,
+                           onContractsClick,
                            onLogoutClick,
-                       }: NavbarProps) {
+                       }: NavBarProps) {
     return (
-        <header className="navbar">
-            {/* Left: User Avatar & Info */}
-            <div className="navbar-user">
-                <div className="navbar-avatar">
-                    <i className="icon icon-user-circle" />
-                </div>
-                <div className="navbar-user-info">
-                    <span className="navbar-username">{userName}</span>
-                    <span className="navbar-role">{role}</span>
-                </div>
+        <header className="top-navbar">
+            <div className="navbar-brand">
+                <span className="brand-title">Holiday Portal</span>
+                <span className="brand-subtitle">EMPLOYEE SELF-SERVICE</span>
             </div>
 
-            {/* Right: Actions */}
             <div className="navbar-actions">
-                <button
-                    type="button"
-                    className="navbar-pill-btn"
-                    onClick={onManagementClick}
-                >
-                    <i className="icon icon-management" />
-                    <span>MANAGEMENT</span>
-                </button>
+                {/* Navigation Action Icons */}
+                <div className="nav-icon-group">
+                    {/* Contracts View Button */}
+                    <button
+                        type="button"
+                        className="nav-icon-btn"
+                        onClick={onContractsClick}
+                        aria-label="My Contracts"
+                        title="My Contracts"
+                    >
+                        <i className="nav-icon icon-document" aria-hidden="true" />
+                    </button>
 
-                <button
-                    type="button"
-                    className="navbar-icon-btn"
-                    onClick={onCalendarClick}
-                    aria-label="Calendar overview"
-                >
-                    <i className="icon icon-calendar" />
-                </button>
+                    {/* Team Vacation Overview (People icon) */}
+                    <button
+                        type="button"
+                        className="nav-icon-btn"
+                        onClick={onTeamClick}
+                        aria-label="Team Overview"
+                        title="Team Overview"
+                    >
+                        <i className="nav-icon icon-team" aria-hidden="true" />
+                    </button>
 
-                <button
-                    type="button"
-                    className="navbar-icon-btn navbar-notification-container"
-                    onClick={onNotificationClick}
-                    aria-label={`Notifications, ${notificationCount} unread`}
-                >
-                    <i className="icon icon-bell" />
-                    {notificationCount > 0 && (
-                        <span className="navbar-badge">{notificationCount}</span>
-                    )}
-                </button>
+                    {/* My Vacations (Calendar icon) */}
+                    <button
+                        type="button"
+                        className="nav-icon-btn"
+                        onClick={onCalendarClick}
+                        aria-label="My Vacations"
+                        title="My Vacations"
+                    >
+                        <i className="nav-icon icon-calendar" aria-hidden="true" />
+                    </button>
+                </div>
 
-                <button
-                    type="button"
-                    className="navbar-pill-btn"
-                    onClick={onLogoutClick}
-                >
-                    <i className="icon icon-logout" />
-                    <span>Logout</span>
-                </button>
+                {/* User Identity & Logout */}
+                <div className="nav-user-slot">
+                    <div className="user-text">
+                        <span className="user-name">{userName}</span>
+                        <span className="user-role-badge">{role}</span>
+                    </div>
+
+                    <button
+                        type="button"
+                        className="btn-logout"
+                        onClick={onLogoutClick}
+                    >
+                        LOGOUT
+                    </button>
+                </div>
             </div>
         </header>
     );

@@ -1,291 +1,222 @@
 import { useState } from 'react';
-import { Navbar } from '../components/NavBar';
+import { useNavigate } from 'react-router-dom';
 import { CalendarMonth } from '../components/CalendarMonth';
 import '../css/bookVacationView.css';
 
 interface AllocationPeriod {
     id: string;
-    periodLabel: string;
-    periodRange: string;
+    name: string;
     type: string;
     availableHours: number;
-    allocatedHours: number;
+    selectedHours: number;
     isSelected: boolean;
 }
 
-interface BookVacationViewProps {
-    onBackToOverview: () => void;
-    onHelpClick?: () => void;
-}
-
-const INITIAL_PERIODS: AllocationPeriod[] = [
+const INITIAL_ALLOCATION_PERIODS: AllocationPeriod[] = [
     {
-        id: 'period-1',
-        periodLabel: 'PERIOD',
-        periodRange: 'September 2025 – August 2026',
+        id: 'per-1',
+        name: 'September 2025 – August 2026',
         type: 'The Holiday Act',
         availableHours: 20,
-        allocatedHours: 20,
+        selectedHours: 20,
         isSelected: true,
     },
     {
-        id: 'period-2',
-        periodLabel: 'PERIOD',
-        periodRange: 'September 2026 – August 2027',
+        id: 'per-2',
+        name: 'September 2026 – August 2027',
         type: 'The Holiday Act',
         availableHours: 20,
-        allocatedHours: 0,
+        selectedHours: 17,
         isSelected: true,
     },
     {
-        id: 'period-3',
-        periodLabel: 'PERIOD',
-        periodRange: 'January 2025 – December 2025',
+        id: 'per-3',
+        name: 'January 2025 – December 2025',
         type: 'The KT. Agreement',
         availableHours: 37,
-        allocatedHours: 0,
-        isSelected: true,
+        selectedHours: 0,
+        isSelected: false,
     },
 ];
 
-export function BookVacationView({
-                                     onBackToOverview,
-                                     onHelpClick,
-                                 }: BookVacationViewProps) {
-    // Calendar date range state (Nov 30, 2026 - Dec 4, 2026 as shown in screenshot)
-    const [startDate, setStartDate] = useState<Date | null>(new Date(2026, 10, 30));
-    const [endDate, setEndDate] = useState<Date | null>(new Date(2026, 11, 4));
+export function BookVacationView() {
+    const navigate = useNavigate();
 
-    // Calendar month navigation state
-    const [startMonth, setStartMonth] = useState({ year: 2026, monthIndex: 10 });
-    const [endMonth, setEndMonth] = useState({ year: 2026, monthIndex: 11 });
+    const [startDate, setStartDate] = useState<Date | null>(new Date(2026, 4, 11)); // May 11, 2026
+    const [endDate, setEndDate] = useState<Date | null>(new Date(2026, 4, 15));   // May 15, 2026
+    const [periods, setPeriods] = useState<AllocationPeriod[]>(INITIAL_ALLOCATION_PERIODS);
 
-    // Period balance allocation state
-    const [periods, setPeriods] = useState<AllocationPeriod[]>(INITIAL_PERIODS);
-
-    const totalAllocatedHours = periods.reduce((sum, item) => sum + item.allocatedHours, 0);
-    const requiredHours = 37.5;
+    const handleDateSelect = (date: Date) => {
+        if (!startDate || (startDate && endDate)) {
+            setStartDate(date);
+            setEndDate(null);
+        } else if (startDate && !endDate) {
+            if (date < startDate) {
+                setStartDate(date);
+            } else {
+                setEndDate(date);
+            }
+        }
+    };
 
     const handleToggleSelect = (id: string) => {
         setPeriods((prev) =>
-            prev.map((item) =>
-                item.id === id ? { ...item, isSelected: !item.isSelected } : item
-            )
+            prev.map((p) => (p.id === id ? { ...p, isSelected: !p.isSelected } : p))
         );
     };
 
-    const handleStepperChange = (id: string, delta: number) => {
+    const handleHourChange = (id: string, delta: number) => {
         setPeriods((prev) =>
-            prev.map((item) => {
-                if (item.id !== id) return item;
-                const nextVal = item.allocatedHours + delta;
-                if (nextVal < 0 || nextVal > item.availableHours) return item;
-                return { ...item, allocatedHours: nextVal };
+            prev.map((p) => {
+                if (p.id !== id) return p;
+                const newHours = Math.max(0, Math.min(p.availableHours, p.selectedHours + delta));
+                return { ...p, selectedHours: newHours, isSelected: newHours > 0 ? true : p.isSelected };
             })
         );
     };
 
+    const totalCoveredHours = periods
+        .filter((p) => p.isSelected)
+        .reduce((sum, p) => sum + p.selectedHours, 0);
+
+    const handleSubmitRequest = () => {
+        alert(`Request submitted for ${totalCoveredHours} hours across selected periods!`);
+        navigate('/my-vacations');
+    };
+
     return (
         <div className="book-vacation-wrapper">
-            <Navbar />
-
             <main className="book-vacation-content">
-                {/* Back Link */}
                 <button
                     type="button"
                     className="back-nav-btn"
-                    onClick={onBackToOverview}
+                    onClick={() => navigate('/')}
                 >
                     ‹ HOLIDAY OVERVIEW
                 </button>
 
-                {/* Section Heading */}
                 <header className="book-vacation-header">
-                    <span className="book-vacation-eyebrow">PLAN YOUR TIME OFF</span>
-                    <h1 className="book-vacation-title">Book your vacation</h1>
+                    <span className="book-vacation-eyebrow">TIME AWAY, MADE SIMPLE</span>
+                    <h1 className="book-vacation-title">Book Vacation</h1>
                     <p className="book-vacation-subtitle">
-                        Choose your dates and the holiday balance you would like to use.
+                        Select your vacation dates and allocate your available holiday hours across active periods.
                     </p>
                 </header>
 
-                {/* Dual Calendar Cards */}
-                <section className="calendars-row" aria-label="Select dates">
-                    <CalendarMonth
-                        cardTitle="Vacation start"
-                        year={startMonth.year}
-                        monthIndex={startMonth.monthIndex}
-                        startDate={startDate}
-                        endDate={endDate}
-                        onSelectDate={(d) => setStartDate(d)}
-                        onPrevMonth={() =>
-                            setStartMonth((m) => ({
-                                year: m.monthIndex === 0 ? m.year - 1 : m.year,
-                                monthIndex: m.monthIndex === 0 ? 11 : m.monthIndex - 1,
-                            }))
-                        }
-                        onNextMonth={() =>
-                            setStartMonth((m) => ({
-                                year: m.monthIndex === 11 ? m.year + 1 : m.year,
-                                monthIndex: m.monthIndex === 11 ? 0 : m.monthIndex + 1,
-                            }))
-                        }
-                    />
-
-                    <CalendarMonth
-                        cardTitle="Vacation end"
-                        year={endMonth.year}
-                        monthIndex={endMonth.monthIndex}
-                        startDate={startDate}
-                        endDate={endDate}
-                        onSelectDate={(d) => setEndDate(d)}
-                        onPrevMonth={() =>
-                            setEndMonth((m) => ({
-                                year: m.monthIndex === 0 ? m.year - 1 : m.year,
-                                monthIndex: m.monthIndex === 0 ? 11 : m.monthIndex - 1,
-                            }))
-                        }
-                        onNextMonth={() =>
-                            setEndMonth((m) => ({
-                                year: m.monthIndex === 11 ? m.year + 1 : m.year,
-                                monthIndex: m.monthIndex === 11 ? 0 : m.monthIndex + 1,
-                            }))
-                        }
-                    />
-                </section>
-
-                {/* Navy Summary Strip */}
-                <section className="booking-summary-strip" aria-label="Booking summary">
-                    <div className="summary-left">
-                        <div className="summary-icon-box">
-                            <i className="summary-icon icon-calendar-event" aria-hidden="true" />
+                <div className="booking-layout-grid">
+                    {/* Calendar Picker Panel */}
+                    <section className="booking-calendar-card" aria-label="Vacation date selector">
+                        <h2 className="card-section-title">1. Select Vacation Dates</h2>
+                        <div className="calendar-double-view">
+                            <CalendarMonth
+                                cardTitle="Start Date"
+                                year={2026}
+                                monthIndex={4} // May 2026
+                                startDate={startDate}
+                                endDate={endDate}
+                                onSelectDate={handleDateSelect}
+                            />
+                            <CalendarMonth
+                                cardTitle="End Date"
+                                year={2026}
+                                monthIndex={5} // June 2026
+                                startDate={startDate}
+                                endDate={endDate}
+                                onSelectDate={handleDateSelect}
+                            />
                         </div>
-                        <div className="summary-text-group">
-                            <div className="summary-headline">
-                                You are requesting <strong>5 vacation days</strong>.
-                            </div>
-                            <div className="summary-subtext">
-                                You will be paid 5,625 DKK for this period.
-                            </div>
-                        </div>
-                    </div>
+                    </section>
 
-                    <div className="summary-right">
-                        <span className="summary-date-line">November 30, 2026</span>
-                        <span className="summary-date-line">December 4, 2026</span>
-                    </div>
-                </section>
+                    {/* Period Allocation & Summary Panel */}
+                    <section className="booking-allocation-card" aria-label="Period hours allocation">
+                        <h2 className="card-section-title">2. Allocate Holiday Hours</h2>
 
-                {/* Balance Allocation Section */}
-                <section className="balance-allocation-section">
-                    <div className="balance-section-header">
-                        <div>
-                            <span className="book-vacation-eyebrow">HOLIDAY BALANCE</span>
-                            <h2 className="balance-heading">Choose vacation periods</h2>
-                        </div>
-                        <span className="balance-helper-text">
-              Select one or more periods to take your vacation days from.
-            </span>
-                    </div>
-
-                    <div className="balance-rows-list">
-                        {periods.map((item) => (
-                            <div
-                                key={item.id}
-                                className={`allocation-card ${item.isSelected ? 'selected' : 'unselected'}`}
-                            >
-                                <div className="allocation-left">
-                                    <label className="allocation-checkbox-label">
+                        <div className="periods-list">
+                            {periods.map((period) => (
+                                <div
+                                    key={period.id}
+                                    className={`allocation-period-row ${period.isSelected ? 'selected' : ''}`}
+                                >
+                                    <label className="checkbox-container">
                                         <input
                                             type="checkbox"
-                                            className="allocation-native-checkbox"
-                                            checked={item.isSelected}
-                                            onChange={() => handleToggleSelect(item.id)}
+                                            checked={period.isSelected}
+                                            onChange={() => handleToggleSelect(period.id)}
                                         />
-                                        <span className="allocation-custom-checkbox">
-                      <i className="icon icon-check" aria-hidden="true" />
-                    </span>
+                                        <span className="checkmark" />
                                     </label>
 
-                                    <div className="allocation-info">
-                                        <span className="allocation-period-tag">{item.periodLabel}</span>
-                                        <h4 className="allocation-period-range">{item.periodRange}</h4>
-                                        <span className="allocation-type">{item.type}</span>
+                                    <div className="period-info">
+                                        <span className="period-name">{period.name}</span>
+                                        <span className="period-type">{period.type}</span>
+                                        <span className="period-available">
+                      {period.availableHours} hours available
+                    </span>
+                                    </div>
+
+                                    <div className="stepper-control">
+                                        <button
+                                            type="button"
+                                            className="stepper-btn"
+                                            onClick={() => handleHourChange(period.id, -1)}
+                                            disabled={!period.isSelected || period.selectedHours <= 0}
+                                        >
+                                            −
+                                        </button>
+                                        <span className="stepper-value">{period.selectedHours}h</span>
+                                        <button
+                                            type="button"
+                                            className="stepper-btn"
+                                            onClick={() => handleHourChange(period.id, 1)}
+                                            disabled={!period.isSelected || period.selectedHours >= period.availableHours}
+                                        >
+                                            +
+                                        </button>
                                     </div>
                                 </div>
-
-                                <div className="allocation-right">
-                                    <div className="allocation-stepper-group">
-                                        <span className="allocation-field-label">HOURS TO USE</span>
-                                        <div className="stepper-box">
-                                            <button
-                                                type="button"
-                                                className="stepper-action-btn"
-                                                onClick={() => handleStepperChange(item.id, -1)}
-                                                disabled={!item.isSelected || item.allocatedHours <= 0}
-                                            >
-                                                –
-                                            </button>
-                                            <span className="stepper-counter">{item.allocatedHours}</span>
-                                            <button
-                                                type="button"
-                                                className="stepper-action-btn"
-                                                onClick={() => handleStepperChange(item.id, 1)}
-                                                disabled={!item.isSelected || item.allocatedHours >= item.availableHours}
-                                            >
-                                                +
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <div className="allocation-available-group">
-                                        <span className="available-count">{item.availableHours}</span>
-                                        <span className="available-text">HOURS AVAILABLE</span>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-
-                    {/* Allocation Progress Bar */}
-                    <div className="allocation-status-bar">
-                        <div className="allocation-status-metric">
-                            <span className="status-label">HOURS ALLOCATED</span>
-                            <span className="status-value">
-                {totalAllocatedHours} / {requiredHours} hours
-              </span>
+                            ))}
                         </div>
-                        <span className="status-instruction">
-              Enter at least 1 hour for each selected period.
-            </span>
-                    </div>
 
-                    {/* Action Row */}
-                    <div className="allocation-actions-row">
-                        <button
-                            type="button"
-                            className="btn-action-cancel"
-                            onClick={onBackToOverview}
-                        >
-                            CANCEL
-                        </button>
-                        <button
-                            type="button"
-                            className="btn-action-submit"
-                            onClick={() => alert('Vacation request submitted!')}
-                        >
-                            <span>SEND REQUEST</span>
-                            <span className="btn-arrow">›</span>
-                        </button>
-                    </div>
-                </section>
+                        <div className="allocation-summary-box">
+                            <div className="summary-metric">
+                                <span className="metric-label">TOTAL HOURS ALLOCATED</span>
+                                <span className="metric-value">{totalCoveredHours} hrs</span>
+                            </div>
+                            <div className="summary-metric">
+                                <span className="metric-label">VACATION DAYS</span>
+                                <span className="metric-value">5 days</span>
+                            </div>
+                        </div>
+
+                        <div className="booking-action-buttons">
+                            <button
+                                type="button"
+                                className="btn-cancel"
+                                onClick={() => navigate('/')}
+                            >
+                                CANCEL
+                            </button>
+                            <button
+                                type="button"
+                                className="btn-submit-request"
+                                onClick={handleSubmitRequest}
+                                disabled={totalCoveredHours === 0}
+                            >
+                                SUBMIT VACATION REQUEST
+                            </button>
+                        </div>
+                    </section>
+                </div>
             </main>
 
-            {/* Footer */}
-            <footer className="portal-footer">
-                <span className="footer-brand">HOLIDAY PORTAL</span>
-                <span className="footer-service">EMPLOYEE SELF-SERVICE</span>
-            </footer>
-
+            <button
+                type="button"
+                className="floating-help-btn"
+                onClick={() => alert('Support & Help')}
+                aria-label="Help and support"
+            >
+                ?
+            </button>
         </div>
     );
 }

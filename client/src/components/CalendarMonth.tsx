@@ -1,17 +1,18 @@
-import { useMemo } from 'react';
-import { generateCalendarGrid } from '../utils/calendarUtils';
+import {useMemo} from 'react';
+import {generateCalendarGrid} from '../utils/calendarUtils';
 import '../css/calendarMonth.css';
 
 interface CalendarMonthProps {
-    cardSubtitle?: string;
-    cardTitle: string;
-    year: number;
-    monthIndex: number; // 0 = Jan, 10 = Nov, 11 = Dec
-    startDate?: Date | null;
-    endDate?: Date | null;
-    onSelectDate?: (date: Date) => void;
-    onPrevMonth?: () => void;
-    onNextMonth?: () => void;
+    cardSubtitle?: string,
+    cardTitle: string,
+    year: number,
+    monthIndex: number,
+    startDate?: Date | null,
+    endDate?: Date | null,
+    onSelectDate?: (date: Date) => void,
+    onPrevMonth?: () => void,
+    onNextMonth?: () => void,
+    month?: number
 }
 
 const WEEK_DAYS = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
@@ -26,6 +27,7 @@ export function CalendarMonth({
                                   onSelectDate,
                                   onPrevMonth,
                                   onNextMonth,
+                                  month
                               }: CalendarMonthProps) {
     // Dynamically compute the 35/42 cells whenever year or month changes
     const days = useMemo(
@@ -57,7 +59,7 @@ export function CalendarMonth({
         <div className="calendar-card">
             <header className="calendar-card-header">
                 <div className="calendar-card-icon-container">
-                    <i className="calendar-icon icon-calendar-small" aria-hidden="true" />
+                    <i className="calendar-icon icon-calendar-small" aria-hidden="true"/>
                 </div>
                 <div className="calendar-card-title-group">
                     <span className="calendar-card-subtitle">{cardSubtitle}</span>

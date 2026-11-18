@@ -1,4 +1,4 @@
-import { Navbar } from '../components/NavBar';
+import { useNavigate } from 'react-router-dom';
 import { HolidayCard } from '../components/HolidayCard';
 import '../css/myVacationBank.css';
 
@@ -9,11 +9,6 @@ interface HolidayPeriodDto {
     expiration: string;
     hoursAvailable: number;
     equivalentPayout: string;
-}
-
-interface MyVacationBankProps {
-    onBookVacation?: () => void;
-    onHelpClick?: () => void;
 }
 
 const HARDCODED_HOLIDAY_PERIODS: HolidayPeriodDto[] = [
@@ -36,23 +31,19 @@ const HARDCODED_HOLIDAY_PERIODS: HolidayPeriodDto[] = [
     {
         id: 'period-3',
         periodRange: 'January 2025 – December 2025',
-        type: 'The KL Agreement',
+        type: 'The KT. Agreement',
         expiration: 'May 2026 – April 2027',
         hoursAvailable: 37,
         equivalentPayout: '5,550 DKK after tax',
     },
 ];
 
-export function MyVacationBank({
-                                   onBookVacation,
-                                   onHelpClick,
-                               }: MyVacationBankProps) {
+export function MyVacationBank() {
+    const navigate = useNavigate();
+
     return (
         <div className="bank-page-wrapper">
-            <Navbar />
-
             <main className="bank-content-container">
-                {/* Header Section */}
                 <header className="bank-header">
                     <span className="bank-eyebrow">TIME AWAY, MADE SIMPLE</span>
                     <h1 className="bank-title">Your Holiday Overview</h1>
@@ -61,7 +52,6 @@ export function MyVacationBank({
                     </p>
                 </header>
 
-                {/* 3-Column Period Grid */}
                 <section className="bank-grid" aria-label="Holiday periods">
                     {HARDCODED_HOLIDAY_PERIODS.map((period) => (
                         <HolidayCard
@@ -75,12 +65,11 @@ export function MyVacationBank({
                     ))}
                 </section>
 
-                {/* Call to Action Button */}
                 <div className="bank-actions">
                     <button
                         type="button"
                         className="btn-book-vacation"
-                        onClick={onBookVacation}
+                        onClick={() => navigate('/book')}
                     >
                         <i className="btn-icon icon-calendar-add" aria-hidden="true" />
                         <span>BOOK VACATION</span>
