@@ -1,0 +1,592 @@
+/* ==========================================================================
+   1. SHARED PAGE WRAPPERS & CONTAINERS
+   ========================================================================== */
+
+.profile-page-wrapper,
+.contracts-page-wrapper,
+.bank-page-wrapper,
+.management-page-wrapper,
+.vacations-page-wrapper {
+    min-height: calc(100vh - 72px);
+    width: 100%;
+    background-color: var(--bg-canvas, #fcf8f3);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.bank-page-wrapper {
+    min-height: 100vh;
+}
+
+.profile-container,
+.contracts-container,
+.bank-content-container,
+.management-container,
+.vacations-container {
+    width: 100%;
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 2.75rem 2rem 5rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-container {
+    max-width: 1200px;
+}
+
+.bank-content-container {
+    align-items: center;
+    padding: 3.5rem 1.5rem 6rem;
+}
+
+/* ==========================================================================
+   2. SHARED HEADERS & TYPOGRAPHY
+   ========================================================================== */
+
+.profile-header,
+.contracts-header,
+.bank-header {
+    margin-bottom: 2.25rem;
+}
+
+.bank-header {
+    text-align: center;
+    margin-bottom: 2.75rem;
+}
+
+.management-header-row,
+.vacations-header-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 1.75rem;
+}
+
+.management-header-row { align-items: flex-start; }
+.vacations-header-row { align-items: flex-end; margin-bottom: 2.25rem; }
+
+.management-header-titles {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-name-row {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 0.45rem;
+}
+
+/* Eyebrows */
+.profile-eyebrow,
+.contracts-eyebrow,
+.bank-eyebrow,
+.management-eyebrow,
+.vacations-eyebrow,
+.section-eyebrow {
+    display: block;
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--primary-salmon, #dd7c6c);
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+}
+
+/* Page Titles */
+.profile-title,
+.contracts-title,
+.bank-title,
+.management-title,
+.vacations-title {
+    font-family: var(--font-serif, "Playfair Display", Georgia, serif);
+    font-weight: 700;
+    color: var(--text-primary, #1a1e24);
+    line-height: 1.15;
+    margin: 0 0 0.5rem 0;
+}
+
+.profile-title,
+.bank-title { font-size: 2.5rem; }
+.contracts-title,
+.management-title { font-size: 2.4rem; }
+.vacations-title { font-size: 2.25rem; }
+
+/* Subtitles */
+.profile-subtitle,
+.contracts-subtitle,
+.bank-subtitle,
+.management-subtitle,
+.vacations-subtitle {
+    color: var(--text-secondary, #747d88);
+    font-size: 0.95rem;
+    line-height: 1.45;
+    margin: 0;
+}
+
+.vacations-subtitle {
+    max-width: 640px;
+}
+
+/* ==========================================================================
+   3. SHARED NAV & BUTTONS
+   ========================================================================== */
+
+.back-nav-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    margin-bottom: 1.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--primary-salmon, #dd7c6c);
+    cursor: pointer;
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.back-nav-btn:hover {
+    color: var(--primary-salmon-hover, #cb6d5e);
+    transform: translateX(-2px);
+}
+
+.btn-edit-inline {
+    background: #f1f4f8;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.72rem;
+    opacity: 0.8;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    padding: 0;
+}
+
+.btn-edit-inline:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.btn-add-circle {
+    background-color: var(--primary-salmon-light, #fbe8e4);
+    color: var(--primary-salmon, #dd7c6c);
+    border: none;
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1;
+    transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.btn-add-circle:hover {
+    transform: scale(1.1);
+    filter: brightness(0.96);
+}
+
+/* Primary Salmon Action Button */
+.btn-book-vacation,
+.btn-book-action {
+    background-color: var(--primary-salmon, #dd7c6c);
+    color: var(--text-light, #ffffff);
+    border: none;
+    border-radius: var(--radius-sm, 6px);
+    padding: 0.85rem 1.8rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    box-shadow: 0 4px 14px rgba(221, 124, 108, 0.25);
+    transition: background-color 0.15s ease, transform 0.1s ease;
+    box-sizing: border-box;
+}
+
+.btn-book-vacation { height: 44px; }
+.btn-book-action { flex-shrink: 0; }
+
+.btn-book-vacation:hover,
+.btn-book-action:hover {
+    background-color: var(--primary-salmon-hover, #cb6d5e);
+    transform: translateY(-1px);
+}
+
+.btn-book-vacation:active {
+    transform: translateY(1px);
+}
+
+/* Floating Help Button */
+.floating-help-btn {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: var(--nav-dark, #192636);
+    color: var(--text-light, #ffffff);
+    border: none;
+    font-size: 0.95rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    z-index: 100;
+}
+
+.floating-help-btn:hover {
+    opacity: 0.88;
+    transform: scale(1.05);
+}
+
+/* ==========================================================================
+   4. VIEW-SPECIFIC COMPONENTS
+   ========================================================================== */
+
+/* Profile: Sections */
+.profile-section {
+    margin-bottom: 3.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.section-title-row {
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.section-heading-with-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+}
+
+.section-title {
+    font-family: var(--font-serif, "Playfair Display", Georgia, serif);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary, #1a1e24);
+    margin: 0;
+}
+
+/* My Vacation Bank: Centered Action Bar */
+.bank-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+}
+
+.btn-icon-square {
+    background-color: var(--bg-card, #ffffff);
+    border: 1px solid var(--border-card, #ece6df);
+    border-radius: var(--radius-sm, 6px);
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--shadow-card, 0 4px 18px rgba(0, 0, 0, 0.04));
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+    box-sizing: border-box;
+}
+
+.btn-icon-square:hover {
+    background-color: var(--bg-card-muted, #f8f4ee);
+    border-color: #dcd5cc;
+}
+
+/* Team Management: Counter Widget & Legend */
+.team-count-widget {
+    background-color: var(--nav-dark, #192636);
+    border-radius: var(--radius-md, 10px);
+    padding: 0.65rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+}
+
+.widget-icon { font-size: 1.1rem; }
+.widget-info { display: flex; align-items: baseline; gap: 0.45rem; }
+
+.widget-number {
+    font-family: var(--font-serif, "Playfair Display", Georgia, serif);
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.widget-label {
+    font-size: 0.55rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #a0aab6;
+    font-weight: 700;
+}
+
+.widget-add-btn {
+    background-color: var(--primary-salmon, #dd7c6c);
+    color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+    transition: background-color 0.15s ease, transform 0.15s ease;
+    margin-left: 0.35rem;
+}
+
+.widget-add-btn:hover {
+    background-color: var(--primary-salmon-hover, #cb6d5e);
+    transform: scale(1.08);
+}
+
+.management-legend-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.75rem;
+    color: var(--text-secondary, #747d88);
+}
+
+.legend-item { display: flex; align-items: center; gap: 0.45rem; }
+
+.legend-badge {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+.legend-badge.check-mark { background-color: #ebf5ee; color: #4b885b; }
+.legend-badge.alert-mark { background-color: var(--primary-salmon-light, #fbe8e4); color: var(--primary-salmon, #dd7c6c); }
+
+/* My Vacations: List & Footer Note */
+.vacations-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.vacation-note-row {
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    color: var(--text-secondary, #747d88);
+    font-size: 0.85rem;
+}
+
+/* ==========================================================================
+   5. GRIDS & RESPONSIVE LAYOUTS
+   ========================================================================== */
+
+/* 3-Column Card Grids */
+.cards-three-grid,
+.bank-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.75rem;
+    width: 100%;
+}
+
+.bank-grid {
+    gap: 1.5rem;
+    margin-bottom: 2.75rem;
+}
+
+/* 2-Column Responsive Grids */
+.contracts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 2rem;
+    width: 100%;
+}
+
+.management-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    width: 100%;
+}
+
+@media (max-width: 1024px) {
+    .cards-three-grid {
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    }
+}
+
+@media (max-width: 900px) {
+    .bank-grid {
+        grid-template-columns: 1fr;
+        max-width: 440px;
+    }
+}
+
+@media (max-width: 820px) {
+    .management-header-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .management-legend-row {
+        justify-content: flex-start;
+    }
+    .management-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .vacations-header-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.25rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .contracts-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* --- Company Presets Table --- */
+.presets-card {
+    background: var(--bg-card, #ffffff);
+    border: 1.5px solid var(--border-card, #ece6df);
+    border-radius: var(--radius-md, 12px);
+    overflow: hidden;
+    box-shadow: var(--shadow-card, 0 4px 18px rgba(0, 0, 0, 0.04));
+    width: 100%;
+}
+
+.presets-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.presets-table thead tr {
+    background-color: var(--nav-dark, #192636);
+    color: var(--text-light, #ffffff);
+}
+
+.presets-table th {
+    padding: 1.15rem 1.75rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #b5c2d1;
+}
+
+.presets-table td {
+    padding: 1.25rem 1.75rem;
+    border-bottom: 1px solid var(--border-card, #ece6df);
+    font-size: 0.9rem;
+    vertical-align: middle;
+}
+
+.presets-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.presets-table tbody tr:hover {
+    background-color: #fdfbf8;
+}
+
+.preset-label-cell {
+    font-family: var(--font-serif, "Playfair Display", Georgia, serif);
+    font-weight: 700;
+    color: var(--text-primary, #1a1e24);
+    font-size: 0.95rem;
+}
+
+.preset-value-cell {
+    color: var(--text-secondary, #4a5568);
+}
+
+.preset-action-cell {
+    text-align: right;
+}
+
+.preset-inline-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.5rem 0.75rem;
+    border: 1.5px solid var(--primary-salmon, #dd7c6c);
+    border-radius: var(--radius-sm, 6px);
+    font-family: inherit;
+    font-size: 0.9rem;
+    color: var(--text-primary, #1a1e24);
+    background: #ffffff;
+    outline: none;
+}
+
+.preset-edit-actions {
+    display: inline-flex;
+    gap: 0.4rem;
+    justify-content: flex-end;
+}
+
+.btn-preset-save,
+.btn-preset-cancel {
+    border: none;
+    border-radius: 4px;
+    padding: 0.35rem 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.btn-preset-save {
+    background: var(--primary-salmon, #dd7c6c);
+    color: #ffffff;
+}
+
+.btn-preset-cancel {
+    background: #e2e8f0;
+    color: var(--text-primary, #1a1e24);
+}

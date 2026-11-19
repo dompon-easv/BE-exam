@@ -6,6 +6,8 @@ interface NavBarProps {
     onCalendarClick?: () => void;
     onTeamClick?: () => void;
     onContractsClick?: () => void;
+    onUsersClick?: () => void;
+    onPresetsClick?: () => void;
     onLogoutClick?: () => void;
 }
 
@@ -15,50 +17,103 @@ export function NavBar({
                            onCalendarClick,
                            onTeamClick,
                            onContractsClick,
+                           onUsersClick,
+    onPresetsClick,
                            onLogoutClick,
                        }: NavBarProps) {
+    const isManagementRole = role === 'ACCOUNTANT' || role === 'SYSTEM OWNER';
+    const isSystemOwner = role === 'SYSTEM OWNER';
+
+    const getSubtitle = () => {
+        if (role === 'SYSTEM OWNER') return 'SYSTEM OWNER CONSOLE';
+        if (role === 'ACCOUNTANT') return 'ACCOUNTANT CONSOLE';
+        return 'EMPLOYEE SELF-SERVICE';
+    };
+
     return (
         <header className="top-navbar">
             <div className="navbar-brand">
                 <span className="brand-title">Holiday Portal</span>
-                <span className="brand-subtitle">EMPLOYEE SELF-SERVICE</span>
+                <span className="brand-subtitle">
+          {getSubtitle()}
+        </span>
             </div>
 
             <div className="navbar-actions">
-                {/* Navigation Action Icons */}
                 <div className="nav-icon-group">
-                    {/* Contracts View Button */}
-                    <button
-                        type="button"
-                        className="nav-icon-btn"
-                        onClick={onContractsClick}
-                        aria-label="My Contracts"
-                        title="My Contracts"
-                    >
-                        <i className="nav-icon icon-document" aria-hidden="true" />
-                    </button>
+                    {isManagementRole ? (
+                        /* --- Management Navigation --- */
+                        <>
+                            {isSystemOwner && (
+                                <button
+                                    type="button"
+                                    className="nav-icon-btn"
+                                    onClick={onPresetsClick}
+                                    aria-label="Company Presets"
+                                    title="Company Presets"
+                                >
+                                    ⚙️
+                                </button>
+                            )}
+                            {/* Users management */}
+                            <button
+                                type="button"
+                                className="nav-icon-btn"
+                                onClick={onUsersClick}
+                                aria-label="Manage Users"
+                                title="Users"
+                            >
+                                👤
+                            </button>
 
-                    {/* Team Vacation Overview (People icon) */}
-                    <button
-                        type="button"
-                        className="nav-icon-btn"
-                        onClick={onTeamClick}
-                        aria-label="Team Overview"
-                        title="Team Overview"
-                    >
-                        <i className="nav-icon icon-team" aria-hidden="true" />
-                    </button>
+                            {/* Team Overview */}
+                            <button
+                                type="button"
+                                className="nav-icon-btn"
+                                onClick={onTeamClick}
+                                aria-label="Team Overview"
+                                title="Team Overview"
+                            >
+                                👥
+                            </button>
+                        </>
+                    ) : (
+                        /* --- Regular Employee Navigation --- */
+                        <>
+                            {/* My Contracts */}
+                            <button
+                                type="button"
+                                className="nav-icon-btn"
+                                onClick={onContractsClick}
+                                aria-label="My Contracts"
+                                title="My Contracts"
+                            >
+                                📄
+                            </button>
 
-                    {/* My Vacations (Calendar icon) */}
-                    <button
-                        type="button"
-                        className="nav-icon-btn"
-                        onClick={onCalendarClick}
-                        aria-label="My Vacations"
-                        title="My Vacations"
-                    >
-                        <i className="nav-icon icon-calendar" aria-hidden="true" />
-                    </button>
+                            {/* Team Overview */}
+                            <button
+                                type="button"
+                                className="nav-icon-btn"
+                                onClick={onTeamClick}
+                                aria-label="Team Overview"
+                                title="Team Overview"
+                            >
+                                👥
+                            </button>
+
+                            {/* My Vacations */}
+                            <button
+                                type="button"
+                                className="nav-icon-btn"
+                                onClick={onCalendarClick}
+                                aria-label="My Vacations"
+                                title="My Vacations"
+                            >
+                                📅
+                            </button>
+                        </>
+                    )}
                 </div>
 
                 {/* User Identity & Logout */}

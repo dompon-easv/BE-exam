@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { VacationRowCard, VacationItemDto } from '../components/VacationRowCard';
-import '../css/myVacationView.css';
+import '../css/view.css';
 
 const HARDCODED_VACATIONS: VacationItemDto[] = [
     {
