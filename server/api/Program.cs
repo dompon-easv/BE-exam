@@ -12,9 +12,24 @@ builder.Services.AddScoped<AppDataConnection>(_ => new AppDataConnection(options
 
 builder.Services.AddScoped<UserService>();
 builder.Services.AddControllers();
+
+
 builder.Services.AddOpenApiDocument();
+builder.Services.AddCors(options =>
+{
+        options.AddPolicy("AllowClient", policy =>
+        {
+                policy.WithOrigins("http://localhost:3000", "https://localhost:5173")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+        });
+});
 
 var app = builder.Build();
+
+app.UseCors("AllowClient");
+app.UseOpenApi();
+app.UseSwaggerUi();
 
 using (var scope = app.Services.CreateScope())
 {
