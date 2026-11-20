@@ -1,0 +1,63 @@
+.contracts-page-wrapper {
+    min-height: calc(100vh - 72px);
+    width: 100%;
+    background-color: var(--bg-canvas, #fcf8f3);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.contracts-container {
+    width: 100%;
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 3rem 2rem 4rem 2rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.contracts-header {
+    margin-bottom: 2.5rem;
+}
+
+.contracts-eyebrow {
+    display: block;
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--primary-salmon, #dd7c6c);
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+}
+
+.contracts-title {
+    font-family: var(--font-serif, "Playfair Display", Georgia, serif);
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: var(--text-primary, #1a1e24);
+    line-height: 1.15;
+    margin: 0 0 0.5rem 0;
+}
+
+.contracts-subtitle {
+    color: var(--text-secondary, #747d88);
+    font-size: 0.95rem;
+    line-height: 1.45;
+    margin: 0;
+}
+
+/* Grid Layout matching the two-column card presentation */
+.contracts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 2rem;
+    width: 100%;
+}
+
+@media (max-width: 640px) {
+    .contracts-grid {
+        grid-template-columns: 1fr;
+    }
+}

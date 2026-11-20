@@ -1,0 +1,267 @@
+.team-vacation-wrapper {
+    min-height: calc(100vh - 72px);
+    width: 100%;
+    background-color: var(--bg-canvas, #fcf8f3);
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+.team-vacation-content {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem 4rem 2rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Back Link */
+.back-nav-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    margin-bottom: 1.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--primary-salmon, #dd7c6c);
+    cursor: pointer;
+    align-self: flex-start;
+    transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.back-nav-btn:hover {
+    color: var(--primary-salmon-hover, #cb6d5e);
+    transform: translateX(-2px);
+}
+
+/* Header */
+.team-vacation-header {
+    margin-bottom: 2rem;
+}
+
+.team-vacation-eyebrow {
+    display: block;
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--primary-salmon, #dd7c6c);
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+}
+
+.team-vacation-title {
+    font-family: var(--font-serif, "Playfair Display", Georgia, serif);
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--text-primary, #1a1e24);
+    line-height: 1.15;
+    margin: 0 0 0.5rem 0;
+}
+
+.team-vacation-subtitle {
+    color: var(--text-secondary, #747d88);
+    font-size: 0.95rem;
+    line-height: 1.45;
+    margin: 0;
+    max-width: 640px;
+}
+
+/* Card Container */
+.matrix-card {
+    background-color: var(--bg-card, #ffffff);
+    border: 1.5px solid var(--border-card, #ece6df);
+    border-radius: var(--radius-md, 10px);
+    padding: 1.75rem;
+    box-shadow: var(--shadow-card, 0 4px 18px rgba(0, 0, 0, 0.04));
+    box-sizing: border-box;
+}
+
+.matrix-table-scroll {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+}
+
+/* Heatmap Table */
+.annual-vacation-matrix {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 4px;
+}
+
+/* Column Headers */
+.month-col-header {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-align: left;
+    color: var(--text-muted, #a0a6af);
+    padding: 0.5rem 0.75rem;
+}
+
+.day-col-header {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-secondary, #747d88);
+    text-align: center;
+    min-width: 28px;
+    height: 28px;
+}
+
+.month-label-cell {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-primary, #1a1e24);
+    padding: 0.25rem 0.75rem 0.25rem 0;
+    white-space: nowrap;
+}
+
+/* Day Cells */
+.matrix-day-cell {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.12s ease, filter 0.12s ease;
+    user-select: none;
+}
+
+.matrix-day-cell:hover {
+    transform: scale(1.18);
+    z-index: 2;
+    filter: brightness(0.95);
+}
+
+/* Cell Colors */
+/* 1. Empty Days -> Soft warm grayish */
+.matrix-day-cell.cell-empty {
+    background-color: #f1ebd5; /* soft grayish-beige */
+    background-color: var(--bg-card-muted, #f2ece4);
+}
+
+/* 2. 1 on leave -> Light salmon tint */
+.matrix-day-cell.cell-low {
+    background-color: #f7cfc7;
+    color: #8c3b2d;
+}
+
+/* 3. 2 on leave -> Solid salmon tone */
+.matrix-day-cell.cell-medium {
+    background-color: #e99587;
+    color: #ffffff;
+}
+
+/* 4. 3+ on leave -> Deep vibrant salmon */
+.matrix-day-cell.cell-high {
+    background-color: var(--primary-salmon, #dd7c6c);
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.cell-count {
+    font-size: 0.75rem;
+    line-height: 1;
+}
+
+/* Legend Row */
+.matrix-legend-row {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border-light, #ece7e1);
+    font-size: 0.75rem;
+    color: var(--text-secondary, #747d88);
+    flex-wrap: wrap;
+}
+
+.legend-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--text-muted, #a0a6af);
+    text-transform: uppercase;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.legend-swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    display: inline-block;
+}
+
+.legend-swatch.swatch-empty {
+    background-color: #f2ece4;
+    border: 1px solid #e2dad0;
+}
+
+.legend-swatch.swatch-low {
+    background-color: #f7cfc7;
+}
+
+.legend-swatch.swatch-medium {
+    background-color: #e99587;
+}
+
+.legend-swatch.swatch-high {
+    background-color: var(--primary-salmon, #dd7c6c);
+}
+
+/* Floating Hover Tooltip */
+.matrix-hover-tooltip {
+    position: fixed;
+    transform: translate(-50%, -100%);
+    background-color: var(--nav-dark, #192636);
+    color: #ffffff;
+    padding: 0.6rem 0.85rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    pointer-events: none;
+    z-index: 1000;
+    white-space: nowrap;
+}
+
+.matrix-hover-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--nav-dark, #192636) transparent transparent transparent;
+}
+
+.tooltip-date {
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    color: #f7cfc7;
+}
+
+.tooltip-count {
+    font-weight: 600;
+}
+
+.tooltip-names-list {
+    margin: 0.3rem 0 0 0;
+    padding-left: 1rem;
+}
+
+.tooltip-names-list li {
+    margin: 0.15rem 0;
+}
