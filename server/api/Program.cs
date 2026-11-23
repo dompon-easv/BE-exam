@@ -34,7 +34,9 @@ app.UseSwaggerUi();
 using (var scope = app.Services.CreateScope())
 {
         var db = scope.ServiceProvider.GetRequiredService<AppDataConnection>();
-        db.CreateTable<User>(tableOptions: TableOptions.CreateIfNotExists);
+        //db.CreateTable<User>(tableOptions: TableOptions.CreateIfNotExists);
+        //I've moved this line to the seeder
+       await DatabaseSeeder.SeedAsync(db);
 }
 
 app.MapControllers();
