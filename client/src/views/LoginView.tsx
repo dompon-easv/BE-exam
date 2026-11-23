@@ -129,15 +129,7 @@ export function LoginView({ onLoginSuccess, onHelpClick }: LoginViewProps) {
                 <span className="footer-brand">HOLIDAY PORTAL</span>
                 <span className="footer-service">EMPLOYEE SELF-SERVICE</span>
             </footer>
-
-            <button
-                type="button"
-                className="floating-help-btn"
-                onClick={onHelpClick}
-                aria-label="Help and support"
-            >
-                ?
-            </button>
+            
         </div>
     );
 }

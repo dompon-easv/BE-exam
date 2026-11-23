@@ -1,4 +1,4 @@
-import '../css/vacationRowCard.css';
+import '../css/card.css';
 
 export interface VacationItemDto {
     id: string;

@@ -1,0 +1,175 @@
+.pending-panel-card {
+    background-color: var(--bg-card, #ffffff);
+    border: 1.5px solid var(--border-card, #ece6df);
+    border-radius: var(--radius-md, 12px);
+    overflow: hidden;
+    box-shadow: var(--shadow-card, 0 4px 18px rgba(0, 0, 0, 0.04));
+    margin-bottom: 2.75rem;
+}
+
+.pending-panel-header {
+    background-color: var(--nav-dark, #192636);
+    padding: 1.25rem 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #ffffff;
+}
+
+.pending-header-titles {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.pending-eyebrow {
+    font-size: 0.6rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--primary-salmon, #dd7c6c);
+    font-weight: 700;
+}
+
+.pending-title {
+    font-family: var(--font-serif, "Playfair Display", Georgia, serif);
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 0;
+    color: #ffffff;
+}
+
+.pending-count-pill {
+    background-color: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 9999px;
+    padding: 0.35rem 0.85rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.pending-panel-body {
+    padding: 1.25rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.pending-item-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+}
+
+.pending-item-main {
+    display: flex;
+    align-items: center;
+    gap: 1.15rem;
+    flex: 1;
+}
+
+.pending-date-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--primary-salmon-light, #fbe8e4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.pending-dates-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.pending-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted, #a0a6af);
+    font-weight: 700;
+}
+
+.pending-range {
+    font-family: var(--font-serif, "Playfair Display", Georgia, serif);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary, #1a1e24);
+}
+
+.pending-submitted {
+    font-size: 0.75rem;
+    color: var(--text-secondary, #747d88);
+}
+
+.pending-metrics {
+    display: flex;
+    align-items: center;
+    gap: 2.25rem;
+}
+
+.pending-metric-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 60px;
+}
+
+.pending-metric-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted, #a0a6af);
+    font-weight: 700;
+}
+
+.pending-metric-value {
+    font-family: var(--font-serif, "Playfair Display", Georgia, serif);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary, #1a1e24);
+}
+
+.pending-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.btn-action-reject,
+.btn-action-approve {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 700;
+    transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.btn-action-reject {
+    background-color: var(--primary-salmon-light, #fbe8e4);
+    color: var(--primary-salmon, #dd7c6c);
+}
+
+.btn-action-approve {
+    background-color: #ebf5ee;
+    color: #4b885b;
+}
+
+.btn-action-reject:hover,
+.btn-action-approve:hover {
+    transform: scale(1.1);
+    filter: brightness(0.96);
+}

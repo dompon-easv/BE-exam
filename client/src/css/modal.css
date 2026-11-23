@@ -1,0 +1,473 @@
+/* ==========================================================================
+   1. SHARED MODAL SHELL (Backdrop, Card, Close, Avatar Badge, Header)
+   ========================================================================== */
+
+.modal-backdrop,
+.transfer-modal-backdrop,
+.contract-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(25, 38, 54, 0.45);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1.5rem;
+    box-sizing: border-box;
+}
+
+.modal-card,
+.transfer-modal-card,
+.contract-modal-card {
+    background-color: var(--bg-card, #ffffff);
+    border-radius: var(--radius-md, 14px);
+    border: 1.5px solid var(--border-card, #ece6df);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Width overrides */
+.modal-card { max-width: 540px; padding: 2.75rem 2.5rem 2.25rem; }
+.transfer-modal-card { max-width: 680px; padding: 2.5rem 2.25rem 2rem; }
+.contract-modal-card { max-width: 720px; padding: 2.5rem 2.75rem 2.25rem; }
+
+/* Close Buttons */
+.modal-close-btn,
+.transfer-close-btn,
+.contract-modal-close {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    background: transparent;
+    border: none;
+    font-size: 1rem;
+    color: var(--text-muted, #a0a6af);
+    cursor: pointer;
+    padding: 0.25rem;
+    line-height: 1;
+    transition: color 0.15s ease;
+}
+
+.modal-close-btn:hover,
+.transfer-close-btn:hover,
+.contract-modal-close:hover {
+    color: var(--text-primary, #1a1e24);
+}
+
+/* Avatar / Icon Badge */
+.modal-avatar-wrapper,
+.transfer-avatar-wrapper,
+.contract-modal-avatar-wrapper {
+    position: relative;
+    width: 58px;
+    height: 58px;
+    margin-bottom: 1.25rem;
+}
+
+.transfer-avatar-wrapper {
+    width: 54px;
+    height: 54px;
+    margin-bottom: 1rem;
+}
+
+.modal-avatar,
+.transfer-avatar-wrapper,
+.contract-modal-avatar {
+    border-radius: 50%;
+    background-color: var(--primary-salmon-light, #fae5e0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-avatar,
+.contract-modal-avatar {
+    width: 58px;
+    height: 58px;
+}
+
+.modal-avatar-icon,
+.transfer-avatar-icon,
+.contract-avatar-icon {
+    font-size: 1.45rem;
+}
+
+.modal-avatar-plus,
+.contract-avatar-plus {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: var(--primary-salmon, #dd7c6c);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border: 2px solid #ffffff;
+}
+
+/* Headers */
+.modal-header,
+.transfer-modal-header,
+.contract-modal-header {
+    text-align: center;
+    margin-bottom: 1.75rem;
+}
+
+.modal-header {
+    margin-bottom: 2rem;
+}
+
+.modal-eyebrow,
+.transfer-eyebrow,
+.contract-modal-eyebrow {
+    display: block;
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--primary-salmon, #dd7c6c);
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+}
+
+.modal-title,
+.transfer-modal-title,
+.contract-modal-title {
+    font-family: var(--font-serif, "Playfair Display", Georgia, serif);
+    font-weight: 700;
+    color: var(--text-primary, #1a1e24);
+    line-height: 1.2;
+    margin: 0 0 0.4rem 0;
+}
+
+.modal-title { font-size: 2rem; }
+.transfer-modal-title { font-size: 1.95rem; margin: 0; }
+.contract-modal-title { font-size: 2.1rem; margin: 0; }
+
+.modal-subtitle {
+    color: var(--text-secondary, #747d88);
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+
+/* ==========================================================================
+   2. SHARED FORM ELEMENTS & BUTTONS
+   ========================================================================== */
+
+.modal-form,
+.transfer-form,
+.contract-modal-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.contract-modal-form {
+    gap: 1.5rem;
+}
+
+.form-field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.field-label,
+.transfer-column-label,
+.schedule-headline {
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-primary, #1a1e24);
+    font-weight: 700;
+}
+
+.field-label {
+    color: var(--text-muted, #a0a6af);
+}
+
+.field-input,
+.contract-field-input,
+.transfer-number-input {
+    width: 100%;
+    padding: 0.75rem 0.95rem;
+    border: 1.5px solid var(--border-card, #ece6df);
+    border-radius: var(--radius-sm, 6px);
+    background-color: var(--bg-card, #ffffff);
+    font-size: 0.88rem;
+    color: var(--text-primary, #1a1e24);
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.15s ease;
+}
+
+.field-input:focus,
+.contract-field-input:focus,
+.transfer-number-input:focus {
+    border-color: var(--primary-salmon, #dd7c6c);
+}
+
+.field-input::placeholder {
+    color: #c4c9ce;
+}
+
+/* Action Buttons (Cancel / Submit) */
+.modal-actions,
+.transfer-modal-actions,
+.contract-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.85rem;
+    margin-top: 0.75rem;
+}
+
+.btn-modal-cancel,
+.btn-transfer-cancel,
+.btn-contract-cancel {
+    background: #ffffff;
+    border: 1.5px solid var(--border-card, #ece6df);
+    border-radius: var(--radius-sm, 6px);
+    padding: 0.75rem 1.6rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-primary, #1a1e24);
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.btn-modal-cancel:hover,
+.btn-transfer-cancel:hover,
+.btn-contract-cancel:hover {
+    background-color: var(--bg-card-muted, #f8f4ee);
+}
+
+.btn-modal-submit,
+.btn-transfer-submit,
+.btn-contract-submit {
+    background-color: var(--primary-salmon, #dd7c6c);
+    color: #ffffff;
+    border: none;
+    border-radius: var(--radius-sm, 6px);
+    padding: 0.75rem 1.6rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    box-shadow: 0 4px 14px rgba(221, 124, 108, 0.28);
+    transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.btn-modal-submit:hover,
+.btn-transfer-submit:hover:not(:disabled),
+.btn-contract-submit:hover {
+    background-color: var(--primary-salmon-hover, #cb6d5e);
+    transform: translateY(-1px);
+}
+
+.btn-transfer-submit:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+
+/* ==========================================================================
+   3. UNIQUE: USER MODAL SPECIFICS
+   ========================================================================== */
+
+.form-row {
+    display: flex;
+    gap: 1rem;
+}
+
+
+/* ==========================================================================
+   4. UNIQUE: TRANSFER VACATION MODAL SPECIFICS
+   ========================================================================== */
+
+.transfer-columns-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+    width: 100%;
+}
+
+.transfer-column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.transfer-options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.transfer-option-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 0.95rem;
+    border-radius: var(--radius-sm, 8px);
+    border: 1.5px solid var(--border-card, #ece6df);
+    background-color: var(--bg-card, #ffffff);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+}
+
+.transfer-option-card:hover:not(.disabled) {
+    border-color: #d1c8be;
+}
+
+.transfer-option-card.selected {
+    border-color: var(--primary-salmon, #dd7c6c);
+    background-color: #fff9f8;
+}
+
+.transfer-option-card.disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+    background-color: #fcfbf9;
+}
+
+.transfer-radio-input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.custom-radio-mark {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1.5px solid #c9cfd6;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.15s ease;
+}
+
+.transfer-option-card.selected .custom-radio-mark {
+    border-color: var(--primary-salmon, #dd7c6c);
+}
+
+.transfer-option-card.selected .custom-radio-mark::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--primary-salmon, #dd7c6c);
+}
+
+.option-text-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.option-period-range {
+    font-family: var(--font-serif, "Playfair Display", Georgia, serif);
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-primary, #1a1e24);
+    line-height: 1.2;
+}
+
+.option-hours-count {
+    font-size: 0.7rem;
+    color: var(--text-secondary, #747d88);
+}
+
+.transfer-number-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    margin-top: 0.25rem;
+}
+
+
+/* ==========================================================================
+   5. UNIQUE: CONTRACT MODAL SPECIFICS
+   ========================================================================== */
+
+.contract-top-grid {
+    display: grid;
+    grid-template-columns: 2fr 2fr 1.2fr;
+    gap: 1rem;
+    width: 100%;
+}
+
+.contract-schedule-inputs-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.schedule-hours-row-4,
+.schedule-hours-row-3 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    width: 100%;
+}
+
+.schedule-header-flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.schedule-locked-note {
+    font-size: 0.7rem;
+    color: var(--text-secondary, #747d88);
+    font-weight: 500;
+    background-color: var(--bg-card-muted, #f8f4ee);
+    border: 1px solid var(--border-light, #ece7e1);
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+}
+
+.contract-field-input:disabled {
+    background-color: var(--bg-card-muted, #f8f4ee);
+    color: var(--text-muted, #a0a6af);
+    cursor: not-allowed;
+    border-color: #e5dfd8;
+}
+
+
+/* ==========================================================================
+   6. RESPONSIVE QUERIES
+   ========================================================================== */
+
+@media (max-width: 600px) {
+    .transfer-columns-grid,
+    .contract-top-grid,
+    .schedule-hours-row-4,
+    .schedule-hours-row-3 {
+        grid-template-columns: 1fr;
+    }
+}

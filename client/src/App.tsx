@@ -1,61 +1,101 @@
 import { useState } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { MainLayout } from './layouts/MainLayout';
 import { LoginView } from './views/LoginView';
 import { MyVacationBank } from './views/MyVacationBank';
 import { BookVacationView } from './views/BookVacationView';
 import { MyVacationsView } from './views/MyVacationView';
 import { TeamVacationOverviewView } from './views/TeamVacationView';
-import { MyContractsView} from "./views/MyContractsView.tsx";
+import { MyContractsView } from './views/MyContractsView';
+import { TeamManagementView } from './views/TeamManagementView';
+import { EmployeeProfileView } from './views/EmployeeProfileView';
+import {CompanyPresetsView} from "./views/CompanyPresetsView.tsx";
 import './css/index.css';
 
-export function App() {
-    const [currentUser, setCurrentUser] = useState<{ name: string; role: string } | null>(null);
+interface CurrentUser {
+    name: string;
+    role: string;
+}
+
+function AppRoutes() {
+    const navigate = useNavigate();
+    const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
+    
+    const isManagementRole = (role: string) =>
+        role === 'ACCOUNTANT' || role === 'SYSTEM OWNER';
+
+    const handleLoginSuccess = (user: CurrentUser) => {
+        setCurrentUser(user);
+
+        if (isManagementRole(user.role)) {
+            navigate('/users');
+        } else {
+            navigate('/');
+        }
+    };
 
     const handleLogout = () => {
         setCurrentUser(null);
+        navigate('/login');
     };
 
     return (
-        <BrowserRouter>
-            <Routes>
-                {!currentUser ? (
-                    /* Unauthenticated Flow: Any URL redirects to /login */
-                    <>
+        <Routes>
+            {!currentUser ? (
+                /* Unauthenticated Flow: Any URL redirects to /login */
+                <>
+                    <Route
+                        path="/login"
+                        element={<LoginView onLoginSuccess={handleLoginSuccess} />}
+                    />
+                    <Route path="*" element={<Navigate to="/login" replace />} />
+                </>
+            ) : (
+                /* Authenticated Flow: Persistent MainLayout holding NavBar + Views */
+                <>
+                    <Route
+                        element={
+                            <MainLayout
+                                userName={currentUser.name}
+                                role={currentUser.role}
+                                onLogout={handleLogout}
+                            />
+                        }
+                    >
+                        {/* Root Route: Redirects Accountant to /users, otherwise loads MyVacationBank */}
                         <Route
-                            path="/login"
-                            element={<LoginView onLoginSuccess={(user) => setCurrentUser(user)} />}
-                        />
-                        <Route path="*" element={<Navigate to="/login" replace />} />
-                    </>
-                ) : (
-                    /* Authenticated Flow: Persistent MainLayout holding NavBar + Views */
-                    <>
-                        <Route
+                            path="/"
                             element={
-                                <MainLayout
-                                    userName={currentUser.name}
-                                    role={currentUser.role}
-                                    onLogout={handleLogout}
-                                />
+                                isManagementRole(currentUser.role) ? (
+                                    <Navigate to="/users" replace />
+                                ) : (
+                                    <MyVacationBank />
+                                )
                             }
-                        >
-                            <Route path="/" element={<MyVacationBank />} />
-                            <Route path="/book" element={<BookVacationView />} />
-                            <Route path="/my-vacations" element={<MyVacationsView />} />
-                            <Route path="/team-overview" element={<TeamVacationOverviewView />} />
-                            <Route path="/my-contracts" element={<MyContractsView/>}></Route>
-                        </Route>
+                        />
+                        <Route path="/book" element={<BookVacationView />} />
+                        <Route path="/my-vacations" element={<MyVacationsView />} />
+                        <Route path="/team-overview" element={<TeamVacationOverviewView />} />
+                        <Route path="/my-contracts" element={<MyContractsView />} />
+                        <Route path="/users" element={<TeamManagementView role={currentUser.role}/>} />
+                        <Route path="/users/:id" element={<EmployeeProfileView role={currentUser.role} />} />
+                        <Route path="/presets" element={currentUser.role === 'SYSTEM OWNER' ? (<CompanyPresetsView />) : (<Navigate to="/" replace />)}/>
+                    </Route>
 
-                        {/* If authenticated user types /login, send them to home */}
-                        <Route path="/login" element={<Navigate to="/" replace />} />
-                        {/* Catch-all fallback */}
-                        <Route path="*" element={<Navigate to="/" replace />} />
-                    </>
-                )}
-            </Routes>
-        </BrowserRouter>
+                    {/* If authenticated user types /login, send them to home */}
+                    <Route path="/login" element={<Navigate to="/" replace />} />
+                    {/* Catch-all fallback */}
+                    <Route path="*" element={<Navigate to="/" replace />} />
+                </>
+            )}
+        </Routes>
     );
 }
 
-export default App;
+export default function App() {
+    return (
+        <BrowserRouter>
+            <AppRoutes />
+        </BrowserRouter>
+    );
+}

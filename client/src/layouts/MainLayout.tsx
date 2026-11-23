@@ -8,8 +8,8 @@ interface MainLayoutProps {
 }
 
 export function MainLayout({
-                               userName = 'John Doe',
-                               role = 'EMPLOYEE',
+                               userName,
+                               role,
                                onLogout,
                            }: MainLayoutProps) {
     const navigate = useNavigate();
@@ -23,6 +23,8 @@ export function MainLayout({
                 onTeamClick={() => navigate('/team-overview')}
                 onContractsClick={() => navigate('/my-contracts')}
                 onLogoutClick={onLogout}
+                onUsersClick={() => navigate('/users')}
+                onPresetsClick={() => navigate('/presets')}
             />
             <Outlet />
         </div>

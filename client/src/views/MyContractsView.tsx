@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ContractCard, type ContractDto } from '../components/ContractCard';
-import '../css/myContractsView.css';
+import '../css/view.css';
 
 // Mock database data matching the design
 const MOCK_CONTRACTS: ContractDto[] = [
