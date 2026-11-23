@@ -11,9 +11,9 @@ public static class DatabaseSeeder
 
     {
         db.CreateTable<User>(tableOptions: TableOptions.CreateIfNotExists);
-        db.CreateTable<VacationAgreements>(tableOptions: TableOptions.CreateIfNotExists);
-        db.CreateTable<VacationDetails>(tableOptions: TableOptions.CreateIfNotExists);
-        db.CreateTable<ClosedDays>(tableOptions: TableOptions.CreateIfNotExists);
+        db.CreateTable<VacationAgreement>(tableOptions: TableOptions.CreateIfNotExists);
+        db.CreateTable<VacationDetail>(tableOptions: TableOptions.CreateIfNotExists);
+        db.CreateTable<ClosedDay>(tableOptions: TableOptions.CreateIfNotExists);
 
         await SeedAgreementsAsync(db);
         await SeedClosedDaysAsync(db);
@@ -22,7 +22,7 @@ public static class DatabaseSeeder
     
     private static async Task SeedAgreementsAsync(AppDataConnection db)
     {
-        if (await db.GetTable<VacationAgreements>().AnyAsync())
+        if (await db.GetTable<VacationAgreement>().AnyAsync())
             return;
 
         // Atomic boundary: Agreement and its Details must commit together
@@ -30,7 +30,7 @@ public static class DatabaseSeeder
 
         // Statutory
         var holidayActId = Guid.NewGuid();
-        await db.InsertAsync(new VacationAgreements
+        await db.InsertAsync(new VacationAgreement
         {
             Id = holidayActId,
             Title = "The holiday Act",
@@ -38,7 +38,7 @@ public static class DatabaseSeeder
             IsOffered = true
         });
 
-        await db.InsertAsync(new VacationDetails
+        await db.InsertAsync(new VacationDetail
         {
             Id = Guid.NewGuid(),
             AgreementId = holidayActId,
@@ -58,7 +58,7 @@ public static class DatabaseSeeder
 
         // 6th Week
         var klAgreementId = Guid.NewGuid();
-        await db.InsertAsync(new VacationAgreements
+        await db.InsertAsync(new VacationAgreement
         {
             Id = klAgreementId,
             Title = "6th Week (Feriefridage)",
@@ -66,7 +66,7 @@ public static class DatabaseSeeder
             IsOffered = true
         });
 
-        await db.InsertAsync(new VacationDetails
+        await db.InsertAsync(new VacationDetail
         {
             Id = Guid.NewGuid(),
             AgreementId = klAgreementId,
@@ -90,10 +90,10 @@ public static class DatabaseSeeder
 
     private static async Task SeedClosedDaysAsync(AppDataConnection db)
     {
-        if (await db.GetTable<ClosedDays>().AnyAsync())
+        if (await db.GetTable<ClosedDay>().AnyAsync())
             return;
 
-        await db.InsertAsync(new ClosedDays
+        await db.InsertAsync(new ClosedDay
         {
             Id = Guid.NewGuid(),
             Date = new DateOnly(2026, 12, 24),
@@ -101,7 +101,7 @@ public static class DatabaseSeeder
             IsManual = true
         });
 
-        await db.InsertAsync(new ClosedDays
+        await db.InsertAsync(new ClosedDay
         {
             Id = Guid.NewGuid(),
             Date = new DateOnly(2026, 12, 31),

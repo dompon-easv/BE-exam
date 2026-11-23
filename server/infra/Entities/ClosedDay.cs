@@ -3,7 +3,7 @@ using LinqToDB.Mapping;
 namespace infra.Entities;
 
 [Table("closed_days")]
-public class ClosedDays
+public class ClosedDay
 {
     [PrimaryKey]
     [Column("id")]
@@ -15,6 +15,7 @@ public class ClosedDays
     [Column("name"), NotNull]
     public string Name { get; set; } = string.Empty;
 
-    [Column("is_manual")] public bool IsManual { get; set; } = false;
+    [Column("is_manual"), NotNull] 
+    public bool IsManual { get; set; } = false;
 
 }

@@ -3,7 +3,7 @@ using LinqToDB.Mapping;
 namespace infra.Entities;
 
 [Table("vacation_agreements")]
-public class VacationAgreements
+public class VacationAgreement
 {
     [PrimaryKey] 
     [Column("id")] 
