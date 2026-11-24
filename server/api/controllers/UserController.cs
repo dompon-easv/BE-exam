@@ -1,5 +1,6 @@
 using infra.Entities;
 using Microsoft.AspNetCore.Mvc;
+using service;
 
 namespace api.controllers;
 
