@@ -108,7 +108,7 @@ public class PresetService(AppDataConnection db, HttpClient httpClient) : IPrese
     public async Task<bool> UpdateAgreementAsync(Guid id, PresetDtos.UpdateVacationAgreementDto dto)
     {
         var agreement = await db.VacationAgreements.FirstOrDefaultAsync(a => a.Id == id);
-        if (agreement == null) return false;
+        if (agreement == null) throw new KeyNotFoundException("Vacation Agreement not found");
 
         if (agreement.IsMandatory && !dto.IsOffered)
         {
@@ -119,6 +119,7 @@ public class PresetService(AppDataConnection db, HttpClient httpClient) : IPrese
         await db.VacationAgreements.Where(a => a.Id == id)
             .Set(a => a.Title, dto.Title)
             .Set(a => a.IsOffered, dto.IsOffered)
+            .Set(a => a.IsMandatory, dto.IsMandatory)
             .UpdateAsync();
 
         await db.VacationDetails.Where(d => d.AgreementId == id)
@@ -143,7 +144,7 @@ public class PresetService(AppDataConnection db, HttpClient httpClient) : IPrese
     public async Task<bool> DeleteAgreementAsync(Guid id)
     {
         var agreement = await db.VacationAgreements.FirstOrDefaultAsync(a => a.Id == id);
-        if (agreement == null) return false;
+        if (agreement == null) throw new KeyNotFoundException("Vacation Agreement not found");
         
         if (agreement.IsMandatory) throw new InvalidOperationException("Mandatory vacation - has to be offered");
         
@@ -179,7 +180,7 @@ public class PresetService(AppDataConnection db, HttpClient httpClient) : IPrese
     {
         var day = await db.ClosedDays.FirstOrDefaultAsync(d => d.Id == id);
         
-        if (day == null) return false;
+        if (day == null) throw new KeyNotFoundException("Closed day not found");
         if (!day.IsManual) throw new InvalidOperationException("official bank holiday cannot be edited");
         
         await db.ClosedDays.Where(d => d.Id == id)
@@ -193,7 +194,7 @@ public class PresetService(AppDataConnection db, HttpClient httpClient) : IPrese
     public async Task<bool> DeleteClosedDayAsync(Guid id)
     {
         var day = await db.ClosedDays.FirstOrDefaultAsync(d => d.Id == id);
-        if (day == null) return false;
+        if (day == null) throw new KeyNotFoundException("Closed day not found");
         
         if (!day.IsManual) throw new InvalidOperationException("official bank holiday cannot be deleted");
         
