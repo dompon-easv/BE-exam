@@ -16,6 +16,115 @@ export interface User {
   name?: string;
 }
 
+export interface VacationAgreementResponseDto {
+  /** @format guid */
+  id?: string;
+  title?: string;
+  isMandatory?: boolean;
+  isOffered?: boolean;
+  details?: VacationDetailDto | null;
+}
+
+export interface VacationDetailDto {
+  /** @format guid */
+  id?: string;
+  unit?: string | null;
+  /** @format decimal */
+  rate?: number | null;
+  /** @format int32 */
+  earningStartDay?: number | null;
+  /** @format int32 */
+  earningStartMonth?: number | null;
+  /** @format int32 */
+  earningEndDay?: number | null;
+  /** @format int32 */
+  earningEndMonth?: number | null;
+  /** @format int32 */
+  earningEndOffset?: number | null;
+  /** @format int32 */
+  usageStartDay?: number | null;
+  /** @format int32 */
+  usageStartMonth?: number | null;
+  /** @format int32 */
+  usageEndDay?: number | null;
+  /** @format int32 */
+  usageEndMonth?: number | null;
+  /** @format int32 */
+  usageEndOffset?: number | null;
+}
+
+export interface CreateVacationAgreementDto {
+  title?: string;
+  isMandatory?: boolean;
+  unit?: string | null;
+  /** @format decimal */
+  rate?: number | null;
+  /** @format int32 */
+  earningStartDay?: number | null;
+  /** @format int32 */
+  earningStartMonth?: number | null;
+  /** @format int32 */
+  earningEndDay?: number | null;
+  /** @format int32 */
+  earningEndMonth?: number | null;
+  /** @format int32 */
+  earningEndOffset?: number | null;
+  /** @format int32 */
+  usageStartDay?: number | null;
+  /** @format int32 */
+  usageStartMonth?: number | null;
+  /** @format int32 */
+  usageEndDay?: number | null;
+  /** @format int32 */
+  usageEndMonth?: number | null;
+  /** @format int32 */
+  usageEndOffset?: number | null;
+}
+
+export interface UpdateVacationAgreementDto {
+  title?: string;
+  isOffered?: boolean;
+  isMandatory?: boolean;
+  unit?: string | null;
+  /** @format decimal */
+  rate?: number | null;
+  /** @format int32 */
+  earningStartDay?: number | null;
+  /** @format int32 */
+  earningStartMonth?: number | null;
+  /** @format int32 */
+  earningEndDay?: number | null;
+  /** @format int32 */
+  earningEndMonth?: number | null;
+  /** @format int32 */
+  earningEndOffset?: number | null;
+  /** @format int32 */
+  usageStartDay?: number | null;
+  /** @format int32 */
+  usageStartMonth?: number | null;
+  /** @format int32 */
+  usageEndDay?: number | null;
+  /** @format int32 */
+  usageEndMonth?: number | null;
+  /** @format int32 */
+  usageEndOffset?: number | null;
+}
+
+export interface ClosedDayDto {
+  /** @format guid */
+  id?: string;
+  /** @format date */
+  date?: string;
+  name?: string;
+  isManual?: boolean;
+}
+
+export interface UpsertClosedDayDto {
+  /** @format date */
+  date?: string;
+  name?: string;
+}
+
 export type QueryParamsType = Record<string | number, any>;
 export type ResponseFormat = keyof Omit<Body, "body" | "bodyUsed">;
 
@@ -279,18 +388,207 @@ export class HttpClient<SecurityDataType = unknown> {
 export class Api<
   SecurityDataType extends unknown,
 > extends HttpClient<SecurityDataType> {
-  api = {
+  getUsers = {
     /**
      * No description
      *
      * @tags User
      * @name UserGetUsers
-     * @request GET:/api/User/GetUsers
+     * @request GET:/GetUsers
      */
     userGetUsers: (params: RequestParams = {}) =>
       this.request<User[], any>({
-        path: `/api/User/GetUsers`,
+        path: `/GetUsers`,
         method: "GET",
+        format: "json",
+        ...params,
+      }),
+  };
+  api = {
+    /**
+     * No description
+     *
+     * @tags Presets
+     * @name PresetsGetAgreements
+     * @request GET:/api/Presets/GetAgreements
+     */
+    presetsGetAgreements: (params: RequestParams = {}) =>
+      this.request<VacationAgreementResponseDto[], any>({
+        path: `/api/Presets/GetAgreements`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Presets
+     * @name PresetsCreateAgreement
+     * @request POST:/api/Presets/CreateAgreement
+     */
+    presetsCreateAgreement: (
+      data: CreateVacationAgreementDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<VacationAgreementResponseDto, any>({
+        path: `/api/Presets/CreateAgreement`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Presets
+     * @name PresetsUpdateAgreement
+     * @request PUT:/api/Presets/UpdateAgreement
+     */
+    presetsUpdateAgreement: (
+      data: UpdateVacationAgreementDto,
+      query?: {
+        /** @format guid */
+        id?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<boolean, any>({
+        path: `/api/Presets/UpdateAgreement`,
+        method: "PUT",
+        query: query,
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Presets
+     * @name PresetsDeleteAgreement
+     * @request DELETE:/api/Presets/DeleteAgreement
+     */
+    presetsDeleteAgreement: (
+      query?: {
+        /** @format guid */
+        id?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<boolean, any>({
+        path: `/api/Presets/DeleteAgreement`,
+        method: "DELETE",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Presets
+     * @name PresetsGetClosedDays
+     * @request GET:/api/Presets/GetClosedDays
+     */
+    presetsGetClosedDays: (params: RequestParams = {}) =>
+      this.request<ClosedDayDto[], any>({
+        path: `/api/Presets/GetClosedDays`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Presets
+     * @name PresetsCreateClosedDay
+     * @request POST:/api/Presets/CreateClosedDay
+     */
+    presetsCreateClosedDay: (
+      data: UpsertClosedDayDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<ClosedDayDto, any>({
+        path: `/api/Presets/CreateClosedDay`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Presets
+     * @name PresetsUpdateClosedDay
+     * @request PUT:/api/Presets/UpdateClosedDay
+     */
+    presetsUpdateClosedDay: (
+      data: UpsertClosedDayDto,
+      query?: {
+        /** @format guid */
+        id?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<boolean, any>({
+        path: `/api/Presets/UpdateClosedDay`,
+        method: "PUT",
+        query: query,
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Presets
+     * @name PresetsDeleteClosedDay
+     * @request DELETE:/api/Presets/DeleteClosedDay
+     */
+    presetsDeleteClosedDay: (
+      query?: {
+        /** @format guid */
+        id?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<boolean, any>({
+        path: `/api/Presets/DeleteClosedDay`,
+        method: "DELETE",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Presets
+     * @name PresetsSyncHolidays
+     * @request POST:/api/Presets/SyncHolidays
+     */
+    presetsSyncHolidays: (
+      query?: {
+        /** @format int32 */
+        year?: number;
+        /** @default "DK" */
+        countryCode?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<number, any>({
+        path: `/api/Presets/SyncHolidays`,
+        method: "POST",
+        query: query,
         format: "json",
         ...params,
       }),

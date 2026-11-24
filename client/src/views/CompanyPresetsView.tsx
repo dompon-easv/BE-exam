@@ -1,41 +1,64 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Api } from '../api/Api';
+import { PresetCard } from '../components/PresetCard';
+import { PresetModal } from '../components/PresetModal';
+import type { VacationAgreementResponseDto } from '../api/Api';
 import '../css/view.css';
 
-interface PresetItem {
-    id: string;
-    label: string;
-    value: string;
-}
-
-const INITIAL_PRESETS: PresetItem[] = [
-    { id: 'p1', label: 'Weeks 1–5: days earned per month', value: '2.08' },
-    { id: 'p2', label: 'Weeks 1–5: earning period / usage period', value: '1 Sep – 31 Aug / 1 Sep – 31 Dec the following year' },
-    { id: 'p3', label: '6th week enabled', value: 'Yes' },
-    { id: 'p4', label: '6th week: hours earned per month (full time)', value: '3.083' },
-    { id: 'p5', label: '6th week: earning period / usage period', value: '1 Jan – 31 Dec / 1 May – 30 Apr' },
-    { id: 'p6', label: 'Calendar of public holidays and company days off', value: 'Danish public holidays + company-specific days (e.g. 24 and 31 December)' },
-];
+const MyApi = new Api();
 
 export function CompanyPresetsView() {
-    const [presets, setPresets] = useState<PresetItem[]>(INITIAL_PRESETS);
-    const [editingId, setEditingId] = useState<string | null>(null);
-    const [draftValue, setDraftValue] = useState<string>('');
+    const [agreements, setAgreements] = useState<VacationAgreementResponseDto[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-    const handleStartEdit = (item: PresetItem) => {
-        setEditingId(item.id);
-        setDraftValue(item.value);
+    const [selectedAgreement, setSelectedAgreement] = useState<VacationAgreementResponseDto | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    // 1. Central loader function
+    const loadAgreements = async () => {
+        try {
+            setLoading(true);
+            setErrorMessage(null);
+            const res = await MyApi.api.presetsGetAgreements();
+            setAgreements(res.data);
+        } catch (err: any) {
+            setErrorMessage(err?.detail || err?.title || 'Failed to load vacation agreements.');
+        } finally {
+            setLoading(false);
+        }
     };
 
-    const handleSave = (id: string) => {
-        setPresets((prev) =>
-            prev.map((item) => (item.id === id ? { ...item, value: draftValue } : item))
-        );
-        setEditingId(null);
+    useEffect(() => {
+        loadAgreements();
+    }, []);
+
+    const handleAddAgreement = () => {
+        setSelectedAgreement(null);
+        setIsModalOpen(true);
     };
 
-    const handleCancel = () => {
-        setEditingId(null);
-        setDraftValue('');
+    const handleEditAgreement = (agreement: VacationAgreementResponseDto) => {
+        setSelectedAgreement(agreement);
+        setIsModalOpen(true);
+    };
+
+    const handleDeleteAgreement = async (agreement: VacationAgreementResponseDto) => {
+        if (!agreement.id) return;
+        if (agreement.isMandatory) {
+            alert('Mandatory policies cannot be deleted.');
+            return;
+        }
+
+        const confirmed = window.confirm(`Are you sure you want to delete "${agreement.title}"?`);
+        if (!confirmed) return;
+
+        try {
+            await MyApi.api.presetsDeleteAgreement({ id: agreement.id });
+            await loadAgreements(); // Reload in place
+        } catch (err: any) {
+            alert(err?.detail || err?.title || 'Failed to delete agreement.');
+        }
     };
 
     return (
@@ -45,80 +68,27 @@ export function CompanyPresetsView() {
                     <span className="profile-eyebrow">ADMINISTRATION</span>
                     <h1 className="profile-title">Company presets</h1>
                     <p className="profile-subtitle">
-                        Review the shared defaults used for vacation balances and employee requests.
+                        Review and configure statutory rules, company vacation policies, and accrual rates.
                     </p>
                 </header>
 
-                <section className="presets-card">
-                    <table className="presets-table">
-                        <thead>
-                        <tr>
-                            <th style={{ width: '42%' }}>PRESET</th>
-                            <th style={{ width: '50%' }}>CURRENT VALUE</th>
-                            <th style={{ width: '8%', textAlign: 'right' }}>ACTION</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {presets.map((item) => {
-                            const isEditing = editingId === item.id;
-                            return (
-                                <tr key={item.id}>
-                                    <td className="preset-label-cell">{item.label}</td>
-                                    <td className="preset-value-cell">
-                                        {isEditing ? (
-                                            <input
-                                                type="text"
-                                                className="preset-inline-input"
-                                                value={draftValue}
-                                                onChange={(e) => setDraftValue(e.target.value)}
-                                                onKeyDown={(e) => {
-                                                    if (e.key === 'Enter') handleSave(item.id);
-                                                    if (e.key === 'Escape') handleCancel();
-                                                }}
-                                                autoFocus
-                                            />
-                                        ) : (
-                                            <span>{item.value}</span>
-                                        )}
-                                    </td>
-                                    <td className="preset-action-cell">
-                                        {isEditing ? (
-                                            <div className="preset-edit-actions">
-                                                <button
-                                                    type="button"
-                                                    className="btn-preset-save"
-                                                    onClick={() => handleSave(item.id)}
-                                                    title="Save"
-                                                >
-                                                    ✓
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    className="btn-preset-cancel"
-                                                    onClick={handleCancel}
-                                                    title="Cancel"
-                                                >
-                                                    ✕
-                                                </button>
-                                            </div>
-                                        ) : (
-                                            <button
-                                                type="button"
-                                                className="btn-edit-contract"
-                                                onClick={() => handleStartEdit(item)}
-                                                aria-label={`Edit ${item.label}`}
-                                                title="Edit preset"
-                                            >
-                                                ✏️
-                                            </button>
-                                        )}
-                                    </td>
-                                </tr>
-                            );
-                        })}
-                        </tbody>
-                    </table>
+                <section className="profile-section">
+                    <PresetCard
+                        agreements={agreements}
+                        loading={loading}
+                        errorMessage={errorMessage}
+                        onAddAgreement={handleAddAgreement}
+                        onEditAgreement={handleEditAgreement}
+                        onDeleteAgreement={handleDeleteAgreement}
+                    />
                 </section>
+
+                <PresetModal
+                    isOpen={isModalOpen}
+                    agreement={selectedAgreement}
+                    onClose={() => setIsModalOpen(false)}
+                    onSuccess={loadAgreements} // 2. Direct callback execution
+                />
             </main>
         </div>
     );
