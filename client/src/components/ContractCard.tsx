@@ -1,4 +1,4 @@
-import '../css/contractCard.css';
+import '../css/card.css';
 
 export interface DaySchedule {
     day: string;
@@ -15,9 +15,10 @@ export interface ContractDto {
 
 interface ContractCardProps {
     contract: ContractDto;
+    onEdit?: (contract: ContractDto) => void;
 }
 
-export function ContractCard({ contract }: ContractCardProps) {
+export function ContractCard({ contract, onEdit }: ContractCardProps) {
     return (
         <article className="contract-card">
             {/* Header Slot (Dark Navy) */}
@@ -29,6 +30,20 @@ export function ContractCard({ contract }: ContractCardProps) {
                     <span className="contract-status-badge">{contract.badgeLabel}</span>
                     <h2 className="contract-range-text">{contract.dateRange}</h2>
                 </div>
+
+
+                {onEdit && (
+                    <button
+                        type="button"
+                        className="btn-edit-contract"
+                        onClick={() => onEdit(contract)}
+                        aria-label={`Edit contract ${contract.dateRange}`}
+                        title="Edit contract dates"
+                    >
+                        ✏️
+                    </button>
+                )}
+                
             </header>
 
             {/* FTE Highlight Strip */}

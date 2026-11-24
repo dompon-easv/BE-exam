@@ -1,4 +1,4 @@
-import '../css/holidaycard.css';
+import '../css/card.css';
 
 interface HolidayCardProps {
     periodLabel?: string;
