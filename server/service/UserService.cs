@@ -1,7 +1,7 @@
 using infra.data;
 using infra.Entities;
 
-namespace api.controllers;
+namespace service;
 
 public class UserService(AppDataConnection db)
 {
