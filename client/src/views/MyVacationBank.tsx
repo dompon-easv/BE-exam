@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { HolidayCard } from '../components/HolidayCard';
-import '../css/myVacationBank.css';
+import '../css/view.css';
 
 interface HolidayPeriodDto {
     id: string;

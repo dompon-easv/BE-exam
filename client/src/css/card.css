@@ -1,0 +1,533 @@
+/* ==========================================================================
+   1. SHARED CARD SHELL & COMMON CONTAINERS
+   ========================================================================== */
+
+.holiday-card,
+.contract-card,
+.user-card {
+    background-color: var(--bg-card, #ffffff);
+    border: 1.5px solid var(--border-card, #ece6df);
+    border-radius: var(--radius-md, 12px);
+    box-shadow: var(--shadow-card, 0 4px 18px rgba(0, 0, 0, 0.04));
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.holiday-card {
+    border-width: 1px;
+    border-color: var(--border-light, #ece7e1);
+    border-radius: var(--radius-md, 10px);
+}
+
+.holiday-card:hover,
+.contract-card:hover,
+.user-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.07);
+}
+
+/* Common Dark Navy Header Strip */
+.holiday-card-header,
+.contract-card-header {
+    background-color: var(--nav-dark, #192636);
+    color: var(--text-light, #ffffff);
+    padding: 1.25rem 1.5rem;
+}
+
+.contract-card-header {
+    padding: 1.5rem 1.75rem;
+    display: flex;
+    align-items: center;
+    gap: 1.15rem;
+}
+
+/* Common Eyebrow/Status Labels */
+.holiday-card-label,
+.contract-status-badge,
+.fte-label,
+.metric-label,
+.user-role-label,
+.pending-count-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted, #a0a6af);
+    font-weight: 700;
+}
+
+.holiday-card-label,
+.contract-status-badge {
+    color: #b5c2d1;
+}
+
+/* Common Serif Card Titles */
+.holiday-card-title,
+.contract-range-text,
+.vacation-item-title,
+.user-name-heading {
+    font-family: var(--font-serif, "Playfair Display", Georgia, serif);
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.25;
+    margin: 0;
+}
+
+.holiday-card-title,
+.contract-range-text {
+    color: var(--text-light, #ffffff);
+    margin-top: 0.35rem;
+}
+
+.user-name-heading {
+    font-size: 1.25rem;
+    color: var(--text-primary, #1a1e24);
+}
+
+.vacation-item-title {
+    color: var(--text-primary, #1a1e24);
+}
+
+
+/* ==========================================================================
+   2. HOLIDAY PERIOD CARD DETAILS
+   ========================================================================== */
+
+.holiday-card-body {
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.metric-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--border-light, #ece7e1);
+}
+
+.metric-row:first-child { padding-top: 0; }
+.metric-row:last-child { padding-bottom: 0; border-bottom: none; }
+
+.metric-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.metric-value {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary, #1a1e24);
+}
+
+/* SVG Mask Icons */
+.card-icon {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    background-color: var(--primary-salmon, #dd7c6c);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    flex-shrink: 0;
+}
+
+.icon-calendar-event {
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>');
+    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>');
+}
+
+.icon-file-expiration {
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>');
+    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>');
+}
+
+.icon-clock-hours {
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>');
+    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>');
+}
+
+.icon-money-cash {
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>');
+    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>');
+}
+
+
+/* ==========================================================================
+   3. CONTRACT CARD DETAILS
+   ========================================================================== */
+
+.contract-header-icon-box {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.contract-doc-icon {
+    font-size: 1.1rem;
+    line-height: 1;
+}
+
+.contract-header-titles {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.contract-fte-bar {
+    background-color: var(--bg-card-muted, #f8f4ee);
+    padding: 0.85rem 1.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-light, #ece7e1);
+}
+
+.fte-value {
+    font-family: var(--font-serif, "Playfair Display", Georgia, serif);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--primary-salmon, #dd7c6c);
+}
+
+.contract-schedule-section {
+    padding: 1.25rem 1.75rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.schedule-section-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--primary-salmon, #dd7c6c);
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+.schedule-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.schedule-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid #f2ece4;
+}
+
+.schedule-row:last-child { border-bottom: none; }
+
+.schedule-day {
+    font-size: 0.85rem;
+    color: var(--text-primary, #1a1e24);
+    font-weight: 500;
+}
+
+.schedule-hours {
+    font-family: var(--font-serif, "Playfair Display", Georgia, serif);
+    font-size: 0.9rem;
+    color: var(--text-primary, #1a1e24);
+    font-weight: 700;
+}
+
+.btn-edit-contract {
+    margin-left: auto;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.75rem;
+    transition: background-color 0.15s ease, transform 0.15s ease;
+    padding: 0;
+}
+
+.btn-edit-contract:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(1.08);
+}
+
+
+/* ==========================================================================
+   4. USER CARD DETAILS (Team Management)
+   ========================================================================== */
+
+.user-card-body {
+    padding: 1.5rem 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.user-details-group {
+    display: flex;
+    align-items: center;
+    gap: 1.15rem;
+}
+
+.user-avatar {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-serif, "Playfair Display", Georgia, serif);
+    font-size: 1rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    user-select: none;
+}
+
+.user-info-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.user-name-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-edit-user {
+    background: #f1f4f8;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.7rem;
+    opacity: 0.8;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    padding: 0;
+}
+
+.btn-edit-user:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.status-badge-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.status-badge-circle.status-check {
+    background-color: #ebf5ee;
+    color: #4b885b;
+}
+
+.status-badge-circle.status-alert {
+    background-color: var(--primary-salmon-light, #fbe8e4);
+    color: var(--primary-salmon, #dd7c6c);
+}
+
+.user-card-footer {
+    border-top: 1px solid var(--border-light, #ece7e1);
+    padding: 0.85rem 1.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--bg-card, #ffffff);
+}
+
+.pending-count-label.has-pending {
+    color: var(--primary-salmon, #dd7c6c);
+}
+
+.btn-open-profile {
+    background: transparent;
+    border: none;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-primary, #1a1e24);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0;
+    transition: color 0.15s ease;
+}
+
+.btn-open-profile:hover {
+    color: var(--primary-salmon, #dd7c6c);
+}
+
+.chevron-arrow {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+
+/* ==========================================================================
+   5. VACATION ROW CARD (My Vacations List)
+   ========================================================================== */
+
+.vacation-card-row {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    background-color: var(--bg-card, #ffffff);
+    border: 1.5px solid var(--border-card, #ece6df);
+    border-radius: var(--radius-md, 10px);
+    padding: 1.1rem 1.5rem;
+    box-shadow: var(--shadow-card, 0 4px 18px rgba(0, 0, 0, 0.04));
+    box-sizing: border-box;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.vacation-card-row:hover {
+    transform: translateY(-1px);
+    border-color: #ded6cb;
+}
+
+.vacation-card-row.status-border-completed { border-left: 4px solid #b8bfc6; }
+.vacation-card-row.status-border-upcoming { border-left: 4px solid var(--nav-dark, #192636); }
+.vacation-card-row.status-border-pending { border-left: 4px solid var(--primary-salmon, #dd7c6c); }
+
+.vacation-date-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 62px;
+    height: 60px;
+    background-color: var(--bg-card-muted, #f8f4ee);
+    border: 1px solid var(--border-card, #ece6df);
+    border-radius: var(--radius-sm, 6px);
+    padding: 0.25rem 0.5rem;
+    box-sizing: border-box;
+}
+
+.badge-month {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--primary-salmon, #dd7c6c);
+}
+
+.badge-days {
+    font-family: var(--font-serif, "Playfair Display", Georgia, serif);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary, #1a1e24);
+    line-height: 1.1;
+}
+
+.vacation-main-info {
+    flex: 1 1 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.vacation-date-range {
+    font-size: 0.8rem;
+    color: var(--text-secondary, #747d88);
+    margin: 0;
+}
+
+.vacation-metrics-group {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-shrink: 0;
+}
+
+.metric-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 75px;
+}
+
+.vacation-status-slot {
+    min-width: 135px;
+    display: flex;
+    justify-content: flex-end;
+    flex-shrink: 0;
+}
+
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 9999px;
+    background-color: var(--bg-card-muted, #f8f4ee);
+    border: 1px solid var(--border-card, #ece6df);
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.status-dot.dot-completed { background-color: #9aa4ae; }
+.status-dot.dot-upcoming { background-color: var(--nav-dark, #192636); }
+.status-dot.dot-pending { background-color: var(--primary-salmon, #dd7c6c); }
+
+.status-label-text {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-primary, #1a1e24);
+}
+
+@media (max-width: 768px) {
+    .vacation-card-row {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .vacation-metrics-group {
+        width: 100%;
+        justify-content: space-between;
+        padding-top: 0.5rem;
+        border-top: 1px solid var(--border-light, #ece7e1);
+    }
+
+    .vacation-status-slot {
+        width: 100%;
+        justify-content: flex-start;
+    }
+}

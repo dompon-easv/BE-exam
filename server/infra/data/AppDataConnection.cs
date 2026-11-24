@@ -11,4 +11,7 @@ public class AppDataConnection : DataConnection
     }
 
     public ITable<User> Users => this.GetTable<User>();
+    public ITable<VacationAgreement> VacationAgreements => this.GetTable<VacationAgreement>();
+    public ITable<VacationDetail> VacationDetails => this.GetTable<VacationDetail>();
+    public ITable<ClosedDay> ClosedDays => this.GetTable<ClosedDay>();
 }

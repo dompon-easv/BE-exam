@@ -9,6 +9,6 @@ public class User
     public Guid Id { get; set; }
 
     [Column(Name = "Name"), NotNull] 
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
 
 }
