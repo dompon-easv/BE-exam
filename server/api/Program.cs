@@ -23,6 +23,8 @@ builder.Services.AddSingleton<IPasswordHasher, Argon2PasswordHasher>();
 //services
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<IPresetService, PresetService>();
+builder.Services.AddScoped<IContractService, ContractService>();
 builder.Services.AddControllers();
 
 // Configure JSON serializer to emit string enum values instead of numbers   
@@ -34,7 +36,7 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 builder.Services.AddExceptionHandler<MyExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.AddHttpClient();
-builder.Services.AddScoped<IPresetService, PresetService>();
+
 
 
 builder.Services.AddOpenApiDocument();

@@ -12,10 +12,12 @@ public static class DatabaseSeeder
         //we use a task to avoid bottlenecks while populating the database
 
     {
-        db.CreateTable<User>(tableOptions: TableOptions.CreateIfNotExists);
-        db.CreateTable<VacationAgreement>(tableOptions: TableOptions.CreateIfNotExists);
-        db.CreateTable<VacationDetail>(tableOptions: TableOptions.CreateIfNotExists);
-        db.CreateTable<ClosedDay>(tableOptions: TableOptions.CreateIfNotExists);
+        await db.CreateTableAsync<User>(tableOptions: TableOptions.CreateIfNotExists);
+        await db.CreateTableAsync<VacationAgreement>(tableOptions: TableOptions.CreateIfNotExists);
+        await db.CreateTableAsync<VacationDetail>(tableOptions: TableOptions.CreateIfNotExists);
+        await db.CreateTableAsync<ClosedDay>(tableOptions: TableOptions.CreateIfNotExists);
+        await db.CreateTableAsync<Contract>(tableOptions: TableOptions.CreateIfNotExists);
+        await db.CreateTableAsync<WorkSchedule>(tableOptions: TableOptions.CreateIfNotExists);
 
         await SeedUsersAsync(db, hasher);
         await SeedAgreementsAsync(db);
