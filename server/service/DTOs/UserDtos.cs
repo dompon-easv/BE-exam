@@ -2,8 +2,6 @@ using infra.Entities;
 
 namespace service.DTOs;
 
-public class UserDtos
-{
     public record CreateUserRequestDto(
         string Name,
         string Email,
@@ -20,5 +18,4 @@ public class UserDtos
         string Name,
         string Email,
         Role role);
-
-}
+        

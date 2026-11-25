@@ -1,38 +1,38 @@
-import { useState, type FormEvent } from 'react';
+import {useState, type FormEvent, use} from 'react';
+import { MyApi } from "../api/client";
 import '../css/loginView.css';
+import {Role} from "@/api/Api.ts";
 
 interface LoginViewProps {
     onLoginSuccess: (user: { name: string; role: string }) => void;
     onHelpClick?: () => void;
 }
-
 export function LoginView({ onLoginSuccess, onHelpClick }: LoginViewProps) {
     const [emailInput, setEmailInput] = useState('');
     const [passwordInput, setPasswordInput] = useState('');
     const [error, setError] = useState<string | null>(null);
-
-    const handleSubmit = (e: FormEvent) => {
+    const [isLoading, setIsLoading] = useState(false);
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         setError(null);
-
-        const trimmed = emailInput.trim().toLowerCase();
-
-        if (trimmed === 'user') {
-            onLoginSuccess({ name: 'John Doe', role: 'EMPLOYEE' });
-            return;
+        setIsLoading(true);
+        
+        try{
+            const response = await MyApi.api.authLogin({
+                email: emailInput.trim(),
+                password: passwordInput,
+            });
+            
+            
+            onLoginSuccess({
+                name: response.data.name || 'User',
+                role: response.data.role || 'Employee',
+            });
+        } catch (err: any){
+            setError(err?.error?.message || 'Invalid email or password.')
+        }finally {
+            setIsLoading(false)
         }
-
-        if (trimmed === 'accountant') {
-            onLoginSuccess({ name: 'Sarah Connor', role: 'ACCOUNTANT' });
-            return;
-        }
-
-        if (trimmed === 'system_owner') {
-            onLoginSuccess({ name: 'Michael Scott', role: 'SYSTEM OWNER' });
-            return;
-        }
-
-        setError('Invalid role identifier. Type "user", "accountant", or "system_owner".');
     };
 
     const handleQuickFill = (roleKey: string) => {

@@ -10,10 +10,10 @@
  * ---------------------------------------------------------------
  */
 
-export interface User {
-  /** @format guid */
-  id?: string;
-  name?: string;
+export enum Role {
+  Employee = "Employee",
+  Accountant = "Accountant",
+  SystemOwner = "SystemOwner",
 }
 
 export interface VacationAgreementResponseDto {
@@ -123,6 +123,39 @@ export interface UpsertClosedDayDto {
   /** @format date */
   date?: string;
   name?: string;
+}
+
+export interface AuthResponseDto {
+  /** @format guid */
+  id?: string;
+  name?: string;
+  email?: string;
+  role?: Role;
+  token?: string;
+}
+
+export interface ProblemDetails {
+  type?: string | null;
+  title?: string | null;
+  /** @format int32 */
+  status?: number | null;
+  detail?: string | null;
+  instance?: string | null;
+  [key: string]: any;
+}
+
+export interface LoginRequestDto {
+  email?: string;
+  password?: string;
+}
+
+export interface User {
+  /** @format guid */
+  id?: string;
+  name?: string;
+  email?: string;
+  passwordHash?: string;
+  role?: Role;
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -388,22 +421,6 @@ export class HttpClient<SecurityDataType = unknown> {
 export class Api<
   SecurityDataType extends unknown,
 > extends HttpClient<SecurityDataType> {
-  getUsers = {
-    /**
-     * No description
-     *
-     * @tags User
-     * @name UserGetUsers
-     * @request GET:/GetUsers
-     */
-    userGetUsers: (params: RequestParams = {}) =>
-      this.request<User[], any>({
-        path: `/GetUsers`,
-        method: "GET",
-        format: "json",
-        ...params,
-      }),
-  };
   api = {
     /**
      * No description
@@ -589,6 +606,39 @@ export class Api<
         path: `/api/Presets/SyncHolidays`,
         method: "POST",
         query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Auth
+     * @name AuthLogin
+     * @request POST:/api/controller/login
+     */
+    authLogin: (data: LoginRequestDto, params: RequestParams = {}) =>
+      this.request<AuthResponseDto, ProblemDetails>({
+        path: `/api/controller/login`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+  };
+  getUsers = {
+    /**
+     * No description
+     *
+     * @tags User
+     * @name UserGetUsers
+     * @request GET:/GetUsers
+     */
+    userGetUsers: (params: RequestParams = {}) =>
+      this.request<User[], any>({
+        path: `/GetUsers`,
+        method: "GET",
         format: "json",
         ...params,
       }),

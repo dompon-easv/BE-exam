@@ -62,7 +62,7 @@ interface TeamManagementViewProps {
 }
 
 export function TeamManagementView({role}: TeamManagementViewProps) {
-    const isSystemOwner = role === 'SYSTEM OWNER';
+    const isSystemOwner = role === 'SystemOwner';
     const navigate = useNavigate();
     const [users, setUsers] = useState<UserDto[]>(MOCK_USERS);
     const [isModalOpen, setIsModalOpen] = useState(false);

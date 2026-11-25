@@ -6,6 +6,8 @@ using service;
 using service.Data;
 using service.Security;
 
+using System.Text.Json.Serialization;
+
 var builder = WebApplication.CreateBuilder(args);
 
 var options = new DataOptions<AppDataConnection>(
@@ -16,9 +18,19 @@ builder.Services.AddScoped<AppDataConnection>(_ => new AppDataConnection(options
 //security
 builder.Services.AddSingleton<IPasswordHasher, Argon2PasswordHasher>();
 
+
+
 //services
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<AuthService>();
 builder.Services.AddControllers();
+
+// Configure JSON serializer to emit string enum values instead of numbers   
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
+
 builder.Services.AddExceptionHandler<MyExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.AddHttpClient();

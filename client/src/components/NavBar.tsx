@@ -21,12 +21,12 @@ export function NavBar({
     onPresetsClick,
                            onLogoutClick,
                        }: NavBarProps) {
-    const isManagementRole = role === 'ACCOUNTANT' || role === 'SYSTEM OWNER';
-    const isSystemOwner = role === 'SYSTEM OWNER';
+    const isManagementRole = role === 'Accountant' || role === 'SystemOwner';
+    const isSystemOwner = role === 'SystemOwner';
 
     const getSubtitle = () => {
-        if (role === 'SYSTEM OWNER') return 'SYSTEM OWNER CONSOLE';
-        if (role === 'ACCOUNTANT') return 'ACCOUNTANT CONSOLE';
+        if (role === 'SystemOwner') return 'SYSTEM OWNER CONSOLE';
+        if (role === 'Accountant') return 'ACCOUNTANT CONSOLE';
         return 'EMPLOYEE SELF-SERVICE';
     };
 
