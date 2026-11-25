@@ -11,11 +11,10 @@ namespace service.DTOs;
     public record UpdateUserRequestDto(
         string Name,
         string Email,
-        Role role);
+        Role Role);
 
     public record UserResponseDto(
-        Guid id,
+        Guid Id,
         string Name,
         string Email,
-        Role role);
-        
+        Role Role);
