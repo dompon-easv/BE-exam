@@ -120,7 +120,7 @@ export function UserModal({ isOpen, userToEdit, onClose, onSave }: UserModalProp
                             id="user-email"
                             type="email"
                             className="field-input"
-                            placeholder="e.g. emil.petersen@company.dk"
+                            placeholder="e.g. emil.petersen@businessesbjerg.dk"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required

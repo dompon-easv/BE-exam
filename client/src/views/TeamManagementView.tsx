@@ -1,73 +1,47 @@
-import { useState } from 'react';
+import {use, useEffect, useState} from 'react';
 import { UserCard, type UserDto } from '../components/UserCard';
 import { UserModal} from "../components/UserModal.tsx";
 import '../css/view.css';
 import {useNavigate} from "react-router-dom";
 
-const MOCK_USERS: UserDto[] = [
-    {
-        id: 'user-1',
-        initials: 'AJ',
-        avatarBgColor: '#fae5e0',
-        avatarTextColor: '#ba5848',
-        role: 'EMPLOYEE',
-        fullName: 'Anna Jensen',
-        pendingRequestsCount: 1,
-        status: 'needs-attention',
-    },
-    {
-        id: 'user-2',
-        initials: 'MH',
-        avatarBgColor: '#e5eef7',
-        avatarTextColor: '#3b5570',
-        role: 'EMPLOYEE',
-        fullName: 'Mikkel Hansen',
-        pendingRequestsCount: 0,
-        status: 'on-track',
-    },
-    {
-        id: 'user-3',
-        initials: 'SN',
-        avatarBgColor: '#fae5e0',
-        avatarTextColor: '#ba5848',
-        role: 'EMPLOYEE',
-        fullName: 'Sofie Nielsen',
-        pendingRequestsCount: 2,
-        status: 'needs-attention',
-    },
-    {
-        id: 'user-4',
-        initials: 'FL',
-        avatarBgColor: '#fae5e0',
-        avatarTextColor: '#ba5848',
-        role: 'EMPLOYEE',
-        fullName: 'Frederik Larsen',
-        pendingRequestsCount: 0,
-        status: 'on-track',
-    },
-    {
-        id: 'user-5',
-        initials: 'CM',
-        avatarBgColor: '#e5eef7',
-        avatarTextColor: '#3b5570',
-        role: 'EMPLOYEE',
-        fullName: 'Clara Madsen',
-        pendingRequestsCount: 1,
-        status: 'needs-attention',
-    },
-];
+import {MyApi, showApiError} from "@/api/client.ts";
+import {Role} from "@/api/Api.ts";
 
 interface TeamManagementViewProps {
     role?: string;
 }
 
 export function TeamManagementView({role}: TeamManagementViewProps) {
-    const isSystemOwner = role === 'SYSTEM OWNER';
+    const isSystemOwner = role === 'SystemOwner';
     const navigate = useNavigate();
-    const [users, setUsers] = useState<UserDto[]>(MOCK_USERS);
+    const [users, setUsers] = useState<UserDto[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [userToEdit, setUserToEdit] = useState<UserDto | null>(null);
 
+
+    const loadUsers = async () => {
+        try {
+            const res = await MyApi.api.userGetUsers();
+            const mapped: UserDto[] = (res.data || []).map((u) => {
+                const parts = (u.name || 'User').split(' ');
+                const initials = `${parts[0]?.[0] || ''}${parts[1]?.[0] || ''}`.toUpperCase();
+                return {
+                    id: u.id || '',
+                    fullName: u.name || '',
+                    initials: initials || 'U',
+                    role: u.role || 'Employee',
+                    pendingRequestsCount: 0,
+                    status: 'on-track',
+                };
+            });
+            setUsers(mapped);
+        } catch (err) {
+            showApiError(err, 'Failed to load vacation agreements.');
+        }
+    };
+    useEffect(() => {
+        loadUsers();
+    }, []);
     const handleAddUser = () => {
         setUserToEdit(null);
         setIsModalOpen(true);
@@ -79,10 +53,28 @@ export function TeamManagementView({role}: TeamManagementViewProps) {
         setIsModalOpen(true);
     };
 
-    const handleSaveUser = ({firstName, lastName}: { firstName: string; lastName: string }) => {
-        const fullName = `${firstName} ${lastName}`;
-        const initials = `${firstName[0] || ''}${lastName[0] || ''}`.toUpperCase();
-    }
+    const handleSaveUser = async ({
+        firstName,
+        lastName,
+        email,
+    }: {
+        firstName: string;
+        lastName: string;
+        email: string;
+    }) => {
+        try {
+            await MyApi.api.userCreateUser({
+                name: `${firstName} ${lastName}`,
+                email: email,
+                password: 'Password123!', //initial temporary password                                                                                     
+                role: Role.Employee,
+            });
+            await loadUsers();
+            setIsModalOpen(false);
+        }catch (err: any) {
+            showApiError(err, 'Failed to load vacation agreements.');
+        }
+    };
 
     const handleOpenProfile = (id: string) => {
                 navigate(`/users/${id}`);

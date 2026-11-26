@@ -9,29 +9,29 @@ namespace service;
 
 public interface IPresetService
 {
-    Task<List<PresetDtos.VacationAgreementResponseDto>> GetAgreementAsync();
-    Task<PresetDtos.VacationAgreementResponseDto> CreateAgreementAsync(PresetDtos.CreateVacationAgreementDto dto);
-    Task<bool> UpdateAgreementAsync(Guid id, PresetDtos.UpdateVacationAgreementDto dto);
+    Task<List<VacationAgreementResponseDto>> GetAgreementAsync();
+    Task<VacationAgreementResponseDto> CreateAgreementAsync(CreateVacationAgreementDto dto);
+    Task<bool> UpdateAgreementAsync(Guid id, UpdateVacationAgreementDto dto);
     Task<bool> DeleteAgreementAsync(Guid id);
     
-    Task<List<PresetDtos.ClosedDayDto>> GetClosedDayAsync();
-    Task<PresetDtos.ClosedDayDto> CreateClosedDayAsync(PresetDtos.UpsertClosedDayDto dto);
-    Task<bool> UpdateClosedDayAsync(Guid id, PresetDtos.UpsertClosedDayDto dto);
+    Task<List<ClosedDayDto>> GetClosedDayAsync();
+    Task<ClosedDayDto> CreateClosedDayAsync(UpsertClosedDayDto dto);
+    Task<bool> UpdateClosedDayAsync(Guid id, UpsertClosedDayDto dto);
     Task<bool> DeleteClosedDayAsync(Guid id);
     Task<int> SyncPublicHolidaysAsync(int year, string countryCode = "DK");
 }
 
 public class PresetService(AppDataConnection db, HttpClient httpClient) : IPresetService
 {
-    public async Task<List<PresetDtos.VacationAgreementResponseDto>> GetAgreementAsync()
+    public async Task<List<VacationAgreementResponseDto>> GetAgreementAsync()
     {
-        return await db.VacationAgreements.Select(a => new PresetDtos.VacationAgreementResponseDto(
+        return await db.VacationAgreements.Select(a => new VacationAgreementResponseDto(
             a.Id,
             a.Title,
             a.IsMandatory,
             a.IsOffered,
             db.VacationDetails.Where(d => d.AgreementId == a.Id)
-                .Select(d => new PresetDtos.VacationDetailDto(
+                .Select(d => new VacationDetailDto(
                     d.Id,
                     d.Unit,
                     d.Rate,
@@ -48,7 +48,7 @@ public class PresetService(AppDataConnection db, HttpClient httpClient) : IPrese
         )).ToListAsync();
     }
 
-    public async Task<PresetDtos.VacationAgreementResponseDto> CreateAgreementAsync(PresetDtos.CreateVacationAgreementDto dto)
+    public async Task<VacationAgreementResponseDto> CreateAgreementAsync(CreateVacationAgreementDto dto)
     {
         var agreementId = Guid.NewGuid();
         var detailId = Guid.NewGuid();
@@ -84,12 +84,12 @@ public class PresetService(AppDataConnection db, HttpClient httpClient) : IPrese
         await db.InsertAsync(detail);
         await transaction.CommitAsync();
 
-        return new PresetDtos.VacationAgreementResponseDto(
+        return new VacationAgreementResponseDto(
             agreement.Id,
             agreement.Title,
             agreement.IsMandatory,
             agreement.IsOffered,
-            new PresetDtos.VacationDetailDto(
+            new VacationDetailDto(
                 detail.Id,
                 detail.Unit,
                 detail.Rate,
@@ -105,7 +105,7 @@ public class PresetService(AppDataConnection db, HttpClient httpClient) : IPrese
                 detail.UsageEndOffset));
     }
 
-    public async Task<bool> UpdateAgreementAsync(Guid id, PresetDtos.UpdateVacationAgreementDto dto)
+    public async Task<bool> UpdateAgreementAsync(Guid id, UpdateVacationAgreementDto dto)
     {
         var agreement = await db.VacationAgreements.FirstOrDefaultAsync(a => a.Id == id);
         if (agreement == null) throw new KeyNotFoundException("Vacation Agreement not found");
@@ -155,14 +155,14 @@ public class PresetService(AppDataConnection db, HttpClient httpClient) : IPrese
         return true;
     }
 
-    public async Task<List<PresetDtos.ClosedDayDto>> GetClosedDayAsync()
+    public async Task<List<ClosedDayDto>> GetClosedDayAsync()
     {
         return await db.ClosedDays.OrderBy(d => d.Date)
-            .Select(d => new PresetDtos.ClosedDayDto(d.Id, d.Date, d.Name, d.IsManual))
+            .Select(d => new ClosedDayDto(d.Id, d.Date, d.Name, d.IsManual))
             .ToListAsync();
     }
 
-    public async Task<PresetDtos.ClosedDayDto> CreateClosedDayAsync(PresetDtos.UpsertClosedDayDto dto)
+    public async Task<ClosedDayDto> CreateClosedDayAsync(UpsertClosedDayDto dto)
     {
         var newDay = new ClosedDay
         {
@@ -173,10 +173,10 @@ public class PresetService(AppDataConnection db, HttpClient httpClient) : IPrese
         };
         
         await db.InsertAsync(newDay);
-        return new PresetDtos.ClosedDayDto(newDay.Id, newDay.Date, newDay.Name, newDay.IsManual);
+        return new ClosedDayDto(newDay.Id, newDay.Date, newDay.Name, newDay.IsManual);
     }
 
-    public async Task<bool> UpdateClosedDayAsync(Guid id, PresetDtos.UpsertClosedDayDto dto)
+    public async Task<bool> UpdateClosedDayAsync(Guid id, UpsertClosedDayDto dto)
     {
         var day = await db.ClosedDays.FirstOrDefaultAsync(d => d.Id == id);
         
@@ -205,7 +205,7 @@ public class PresetService(AppDataConnection db, HttpClient httpClient) : IPrese
     public async Task<int> SyncPublicHolidaysAsync(int year, string countryCode = "DK")
     {
         var url = $"https://date.nager.at/api/v3/PublicHolidays/{year}/{countryCode}";
-        var holidays = await httpClient.GetFromJsonAsync<List<PresetDtos.NagerHolidayDto>>(url);
+        var holidays = await httpClient.GetFromJsonAsync<List<NagerHolidayDto>>(url);
 
         if (holidays == null || holidays.Count == 0) return 0;
         

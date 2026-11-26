@@ -10,10 +10,64 @@
  * ---------------------------------------------------------------
  */
 
-export interface User {
+export enum Role {
+  Employee = "Employee",
+  Accountant = "Accountant",
+  SystemOwner = "SystemOwner",
+}
+
+export interface ContractResponseDto {
   /** @format guid */
   id?: string;
-  name?: string;
+  /** @format guid */
+  userId?: string;
+  /** @format decimal */
+  fte?: number;
+  /** @format date */
+  validFrom?: string;
+  /** @format date */
+  validTo?: string | null;
+  workSchedules?: WorkScheduleResponseDto[];
+}
+
+export interface WorkScheduleResponseDto {
+  /** @format guid */
+  id?: string;
+  /** @format guid */
+  contractId?: string;
+  /** @format int32 */
+  weekday?: number;
+  /** @format decimal */
+  hours?: number;
+}
+
+export interface CreateContractDto {
+  /** @format guid */
+  userId?: string;
+  /** @format decimal */
+  fte?: number;
+  /** @format date */
+  validFrom?: string;
+  /** @format date */
+  validTo?: string | null;
+  workSchedules?: UpsertWorkScheduleDto[];
+}
+
+export interface UpsertWorkScheduleDto {
+  /** @format int32 */
+  weekday?: number;
+  /** @format decimal */
+  hours?: number;
+}
+
+export interface UpdateContractDto {
+  /** @format decimal */
+  fte?: number;
+  /** @format date */
+  validFrom?: string;
+  /** @format date */
+  validTo?: string | null;
+  workSchedules?: UpsertWorkScheduleDto[];
 }
 
 export interface VacationAgreementResponseDto {
@@ -123,6 +177,45 @@ export interface UpsertClosedDayDto {
   /** @format date */
   date?: string;
   name?: string;
+}
+
+export interface AuthResponseDto {
+  /** @format guid */
+  id?: string;
+  name?: string;
+  email?: string;
+  role?: Role;
+  token?: string;
+}
+
+export interface ProblemDetails {
+  type?: string | null;
+  title?: string | null;
+  /** @format int32 */
+  status?: number | null;
+  detail?: string | null;
+  instance?: string | null;
+  [key: string]: any;
+}
+
+export interface LoginRequestDto {
+  email?: string;
+  password?: string;
+}
+
+export interface UserResponseDto {
+  /** @format guid */
+  id?: string;
+  name?: string;
+  email?: string;
+  role?: Role;
+}
+
+export interface CreateUserRequestDto {
+  name?: string;
+  email?: string;
+  password?: string;
+  role?: Role;
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -388,23 +481,96 @@ export class HttpClient<SecurityDataType = unknown> {
 export class Api<
   SecurityDataType extends unknown,
 > extends HttpClient<SecurityDataType> {
-  getUsers = {
+  api = {
     /**
      * No description
      *
-     * @tags User
-     * @name UserGetUsers
-     * @request GET:/GetUsers
+     * @tags Contracts
+     * @name ContractsGetContracts
+     * @request GET:/api/Contracts/GetContracts
      */
-    userGetUsers: (params: RequestParams = {}) =>
-      this.request<User[], any>({
-        path: `/GetUsers`,
+    contractsGetContracts: (
+      query?: {
+        /** @format guid */
+        userId?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<ContractResponseDto[], any>({
+        path: `/api/Contracts/GetContracts`,
         method: "GET",
+        query: query,
         format: "json",
         ...params,
       }),
-  };
-  api = {
+
+    /**
+     * No description
+     *
+     * @tags Contracts
+     * @name ContractsCreateContract
+     * @request POST:/api/Contracts/CreateContract
+     */
+    contractsCreateContract: (
+      data: CreateContractDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<ContractResponseDto, any>({
+        path: `/api/Contracts/CreateContract`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Contracts
+     * @name ContractsUpdateContract
+     * @request PUT:/api/Contracts/UpdateContract
+     */
+    contractsUpdateContract: (
+      data: UpdateContractDto,
+      query?: {
+        /** @format guid */
+        id?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<ContractResponseDto, any>({
+        path: `/api/Contracts/UpdateContract`,
+        method: "PUT",
+        query: query,
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Contracts
+     * @name ContractsDeleteContract
+     * @request DELETE:/api/Contracts/DeleteContract
+     */
+    contractsDeleteContract: (
+      query?: {
+        /** @format guid */
+        id?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<boolean, any>({
+        path: `/api/Contracts/DeleteContract`,
+        method: "DELETE",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
     /**
      * No description
      *
@@ -589,6 +755,55 @@ export class Api<
         path: `/api/Presets/SyncHolidays`,
         method: "POST",
         query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Auth
+     * @name AuthLogin
+     * @request POST:/api/controller/login
+     */
+    authLogin: (data: LoginRequestDto, params: RequestParams = {}) =>
+      this.request<AuthResponseDto, ProblemDetails>({
+        path: `/api/controller/login`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags User
+     * @name UserGetUsers
+     * @request GET:/api/User
+     */
+    userGetUsers: (params: RequestParams = {}) =>
+      this.request<UserResponseDto[], any>({
+        path: `/api/User`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags User
+     * @name UserCreateUser
+     * @request POST:/api/User
+     */
+    userCreateUser: (data: CreateUserRequestDto, params: RequestParams = {}) =>
+      this.request<UserResponseDto, ProblemDetails>({
+        path: `/api/User`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),

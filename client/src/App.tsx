@@ -22,7 +22,7 @@ function AppRoutes() {
     const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
     
     const isManagementRole = (role: string) =>
-        role === 'ACCOUNTANT' || role === 'SYSTEM OWNER';
+        role === 'Accountant' || role === 'SystemOwner';
 
     const handleLoginSuccess = (user: CurrentUser) => {
         setCurrentUser(user);
@@ -79,7 +79,7 @@ function AppRoutes() {
                         <Route path="/my-contracts" element={<MyContractsView />} />
                         <Route path="/users" element={<TeamManagementView role={currentUser.role}/>} />
                         <Route path="/users/:id" element={<EmployeeProfileView role={currentUser.role} />} />
-                        <Route path="/presets" element={currentUser.role === 'SYSTEM OWNER' ? (<CompanyPresetsView />) : (<Navigate to="/" replace />)}/>
+                        <Route path="/presets" element={currentUser.role === 'SystemOwner' ? (<CompanyPresetsView />) : (<Navigate to="/" replace />)}/>
                     </Route>
 
                     {/* If authenticated user types /login, send them to home */}
