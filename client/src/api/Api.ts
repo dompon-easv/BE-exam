@@ -149,12 +149,18 @@ export interface LoginRequestDto {
   password?: string;
 }
 
-export interface User {
+export interface UserResponseDto {
   /** @format guid */
   id?: string;
   name?: string;
   email?: string;
-  passwordHash?: string;
+  role?: Role;
+}
+
+export interface CreateUserRequestDto {
+  name?: string;
+  email?: string;
+  password?: string;
   role?: Role;
 }
 
@@ -626,19 +632,35 @@ export class Api<
         format: "json",
         ...params,
       }),
-  };
-  getUsers = {
+
     /**
      * No description
      *
      * @tags User
      * @name UserGetUsers
-     * @request GET:/GetUsers
+     * @request GET:/api/User
      */
     userGetUsers: (params: RequestParams = {}) =>
-      this.request<User[], any>({
-        path: `/GetUsers`,
+      this.request<UserResponseDto[], any>({
+        path: `/api/User`,
         method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags User
+     * @name UserCreateUser
+     * @request POST:/api/User
+     */
+    userCreateUser: (data: CreateUserRequestDto, params: RequestParams = {}) =>
+      this.request<UserResponseDto, ProblemDetails>({
+        path: `/api/User`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),
