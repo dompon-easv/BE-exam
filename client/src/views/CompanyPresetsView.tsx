@@ -5,8 +5,7 @@ import { PresetModal } from '../components/PresetModal';
 import type { VacationAgreementResponseDto } from '../api/Api';
 import '../css/view.css';
 import {ClosedDaysCard} from "../components/ClosedDaysCard.tsx";
-
-const MyApi = new Api();
+import { MyApi } from "../api/client";
 
 export function CompanyPresetsView() {
     const [agreements, setAgreements] = useState<VacationAgreementResponseDto[]>([]);

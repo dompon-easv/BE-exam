@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using service;
 using service.DTOs;
@@ -5,9 +6,10 @@ using service.DTOs;
 namespace api.controllers;
 
 [ApiController]
-[Route("api/controller")]
+[Route("api/[controller]")]
 public class AuthController(AuthService authService) : ControllerBase
 {
+    [AllowAnonymous]
     [HttpPost("login")]
     [ProducesResponseType(typeof(AuthResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]   

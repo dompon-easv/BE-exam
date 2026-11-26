@@ -11,31 +11,18 @@ import { TeamManagementView } from './views/TeamManagementView';
 import { EmployeeProfileView } from './views/EmployeeProfileView';
 import {CompanyPresetsView} from "./views/CompanyPresetsView.tsx";
 import './css/index.css';
+import {useAuth} from "@/auth/AuthProvider.tsx";
 
-interface CurrentUser {
-    name: string;
-    role: string;
-}
 
 function AppRoutes() {
     const navigate = useNavigate();
-    const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
+    const {user : currentUser, logout} = useAuth()
     
     const isManagementRole = (role: string) =>
         role === 'Accountant' || role === 'SystemOwner';
 
-    const handleLoginSuccess = (user: CurrentUser) => {
-        setCurrentUser(user);
-
-        if (isManagementRole(user.role)) {
-            navigate('/users');
-        } else {
-            navigate('/');
-        }
-    };
-
     const handleLogout = () => {
-        setCurrentUser(null);
+        logout()
         navigate('/login');
     };
 
@@ -44,10 +31,7 @@ function AppRoutes() {
             {!currentUser ? (
                 /* Unauthenticated Flow: Any URL redirects to /login */
                 <>
-                    <Route
-                        path="/login"
-                        element={<LoginView onLoginSuccess={handleLoginSuccess} />}
-                    />
+                    <Route path="/login" element={<LoginView />} />
                     <Route path="*" element={<Navigate to="/login" replace />} />
                 </>
             ) : (

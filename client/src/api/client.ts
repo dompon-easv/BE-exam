@@ -1,6 +1,18 @@
-import {Api} from './Api'
+import {Api} from './Api';
 
-//not to have to instantiate Api.ts in every file
-export const MyApi = new Api({
-    baseUrl: 'http://localhost:5154'
+
+export const MyApi = new Api<string>({
+    baseUrl: 'http://localhost:5154',
+    baseApiParams: {
+        secure: true,
+    },
+    securityWorker: (token) => {
+        if (!token) return;
+        return {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+    },
+
 })

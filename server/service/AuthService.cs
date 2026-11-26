@@ -1,11 +1,15 @@
 using infra.data;
 using LinqToDB.Async;
+using service.Auth;
 using service.DTOs;
 using service.Security;
 
 namespace service;
 
-public class AuthService(AppDataConnection db, IPasswordHasher hasher)
+public class AuthService(
+    AppDataConnection db,
+    IPasswordHasher hasher,
+    IAuthorizationService authorizationService)
 {
     public async Task<AuthResponseDto> LoginAsync(LoginRequestDto dto)
     {
@@ -18,7 +22,7 @@ public class AuthService(AppDataConnection db, IPasswordHasher hasher)
         }
         
         //placeholder for jwt
-        string token = $"dev-token-{user.Id}";
+        string token = authorizationService.GenerateToken(user);
 
         return new AuthResponseDto(
             user.Id,

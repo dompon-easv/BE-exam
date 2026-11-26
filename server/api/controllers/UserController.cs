@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using infra.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using service;
 using service.DTOs;
@@ -7,9 +9,11 @@ namespace api.controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class UserController(UserService service) : ControllerBase
 {
     [HttpGet]
+    [Authorize(Roles = $"{nameof(Role.Accountant)},{nameof(Role.SystemOwner)}")]
     [ProducesResponseType(typeof(List<UserResponseDto>), StatusCodes.Status200OK)]
     public async Task<ActionResult<List<UserResponseDto>>> GetUsers()
     {
@@ -17,8 +21,9 @@ public class UserController(UserService service) : ControllerBase
         return Ok(users);
     }
 
-    [HttpPost]                                                                                                           
-    [ProducesResponseType(typeof(UserResponseDto), StatusCodes.Status201Created)]                                                                                             
+    [HttpPost]         
+    [Authorize(Roles = nameof(Role.SystemOwner))]
+    [ProducesResponseType(typeof(UserResponseDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)] public async Task<ActionResult<UserResponseDto>> CreateUser([FromBody] CreateUserRequestDto dto)
     {
         try

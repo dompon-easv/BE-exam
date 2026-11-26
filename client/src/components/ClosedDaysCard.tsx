@@ -1,9 +1,9 @@
 import { useState, type FormEvent } from 'react';
-import { Api } from '../api/Api';
+import { MyApi } from "../api/client";
 import type { ClosedDayDto } from '../api/Api';
 import '../css/view.css';
 
-const MyApi = new Api();
+
 
 interface ClosedDaysCardProps {
     closedDays?: ClosedDayDto[];

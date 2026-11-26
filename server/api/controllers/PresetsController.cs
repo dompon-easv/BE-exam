@@ -1,3 +1,5 @@
+using infra.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using service;
 using service.DTOs;
@@ -6,6 +8,7 @@ namespace api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class PresetsController(IPresetService presetService) : ControllerBase
 {
 
@@ -16,6 +19,7 @@ public class PresetsController(IPresetService presetService) : ControllerBase
     }
 
     [HttpPost(nameof(CreateAgreement))]
+    [Authorize(Roles = nameof(Role.SystemOwner))]
     public async Task<PresetDtos.VacationAgreementResponseDto> CreateAgreement(
         [FromBody] PresetDtos.CreateVacationAgreementDto dto)
     {
@@ -23,6 +27,7 @@ public class PresetsController(IPresetService presetService) : ControllerBase
     }
 
     [HttpPut(nameof(UpdateAgreement))]
+    [Authorize(Roles = nameof(Role.SystemOwner))]
     public async Task<bool> UpdateAgreement(
         Guid id, 
         [FromBody] PresetDtos.UpdateVacationAgreementDto dto)
@@ -31,6 +36,7 @@ public class PresetsController(IPresetService presetService) : ControllerBase
     }
 
     [HttpDelete(nameof(DeleteAgreement))]
+    [Authorize(Roles = nameof(Role.SystemOwner))]
     public async Task<bool> DeleteAgreement(Guid id)
     {
         return await presetService.DeleteAgreementAsync(id);
@@ -43,6 +49,7 @@ public class PresetsController(IPresetService presetService) : ControllerBase
     }
 
     [HttpPost(nameof(CreateClosedDay))]
+    [Authorize(Roles = nameof(Role.SystemOwner))]
     public async Task<PresetDtos.ClosedDayDto> CreateClosedDay(
         [FromBody] PresetDtos.UpsertClosedDayDto dto)
     {
@@ -50,6 +57,7 @@ public class PresetsController(IPresetService presetService) : ControllerBase
     }
 
     [HttpPut(nameof(UpdateClosedDay))]
+    [Authorize(Roles = nameof(Role.SystemOwner))]
     public async Task<bool> UpdateClosedDay(
         Guid id, 
         [FromBody] PresetDtos.UpsertClosedDayDto dto)
@@ -58,12 +66,14 @@ public class PresetsController(IPresetService presetService) : ControllerBase
     }
 
     [HttpDelete(nameof(DeleteClosedDay))]
+    [Authorize(Roles = nameof(Role.SystemOwner))]
     public async Task<bool> DeleteClosedDay(Guid id)
     {
         return await presetService.DeleteClosedDayAsync(id);
     }
     
     [HttpPost(nameof(SyncHolidays))]
+    [Authorize(Roles = nameof(Role.SystemOwner))]
     public async Task<int> SyncHolidays(int year, string countryCode = "DK")
     {
         return await presetService.SyncPublicHolidaysAsync(year, countryCode);

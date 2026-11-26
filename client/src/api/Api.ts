@@ -434,11 +434,13 @@ export class Api<
      * @tags Presets
      * @name PresetsGetAgreements
      * @request GET:/api/Presets/GetAgreements
+     * @secure
      */
     presetsGetAgreements: (params: RequestParams = {}) =>
       this.request<VacationAgreementResponseDto[], any>({
         path: `/api/Presets/GetAgreements`,
         method: "GET",
+        secure: true,
         format: "json",
         ...params,
       }),
@@ -449,6 +451,7 @@ export class Api<
      * @tags Presets
      * @name PresetsCreateAgreement
      * @request POST:/api/Presets/CreateAgreement
+     * @secure
      */
     presetsCreateAgreement: (
       data: CreateVacationAgreementDto,
@@ -458,6 +461,7 @@ export class Api<
         path: `/api/Presets/CreateAgreement`,
         method: "POST",
         body: data,
+        secure: true,
         type: ContentType.Json,
         format: "json",
         ...params,
@@ -469,6 +473,7 @@ export class Api<
      * @tags Presets
      * @name PresetsUpdateAgreement
      * @request PUT:/api/Presets/UpdateAgreement
+     * @secure
      */
     presetsUpdateAgreement: (
       data: UpdateVacationAgreementDto,
@@ -483,6 +488,7 @@ export class Api<
         method: "PUT",
         query: query,
         body: data,
+        secure: true,
         type: ContentType.Json,
         format: "json",
         ...params,
@@ -494,6 +500,7 @@ export class Api<
      * @tags Presets
      * @name PresetsDeleteAgreement
      * @request DELETE:/api/Presets/DeleteAgreement
+     * @secure
      */
     presetsDeleteAgreement: (
       query?: {
@@ -506,6 +513,7 @@ export class Api<
         path: `/api/Presets/DeleteAgreement`,
         method: "DELETE",
         query: query,
+        secure: true,
         format: "json",
         ...params,
       }),
@@ -516,11 +524,13 @@ export class Api<
      * @tags Presets
      * @name PresetsGetClosedDays
      * @request GET:/api/Presets/GetClosedDays
+     * @secure
      */
     presetsGetClosedDays: (params: RequestParams = {}) =>
       this.request<ClosedDayDto[], any>({
         path: `/api/Presets/GetClosedDays`,
         method: "GET",
+        secure: true,
         format: "json",
         ...params,
       }),
@@ -531,6 +541,7 @@ export class Api<
      * @tags Presets
      * @name PresetsCreateClosedDay
      * @request POST:/api/Presets/CreateClosedDay
+     * @secure
      */
     presetsCreateClosedDay: (
       data: UpsertClosedDayDto,
@@ -540,6 +551,7 @@ export class Api<
         path: `/api/Presets/CreateClosedDay`,
         method: "POST",
         body: data,
+        secure: true,
         type: ContentType.Json,
         format: "json",
         ...params,
@@ -551,6 +563,7 @@ export class Api<
      * @tags Presets
      * @name PresetsUpdateClosedDay
      * @request PUT:/api/Presets/UpdateClosedDay
+     * @secure
      */
     presetsUpdateClosedDay: (
       data: UpsertClosedDayDto,
@@ -565,6 +578,7 @@ export class Api<
         method: "PUT",
         query: query,
         body: data,
+        secure: true,
         type: ContentType.Json,
         format: "json",
         ...params,
@@ -576,6 +590,7 @@ export class Api<
      * @tags Presets
      * @name PresetsDeleteClosedDay
      * @request DELETE:/api/Presets/DeleteClosedDay
+     * @secure
      */
     presetsDeleteClosedDay: (
       query?: {
@@ -588,6 +603,7 @@ export class Api<
         path: `/api/Presets/DeleteClosedDay`,
         method: "DELETE",
         query: query,
+        secure: true,
         format: "json",
         ...params,
       }),
@@ -598,6 +614,7 @@ export class Api<
      * @tags Presets
      * @name PresetsSyncHolidays
      * @request POST:/api/Presets/SyncHolidays
+     * @secure
      */
     presetsSyncHolidays: (
       query?: {
@@ -612,6 +629,7 @@ export class Api<
         path: `/api/Presets/SyncHolidays`,
         method: "POST",
         query: query,
+        secure: true,
         format: "json",
         ...params,
       }),
@@ -621,13 +639,15 @@ export class Api<
      *
      * @tags Auth
      * @name AuthLogin
-     * @request POST:/api/controller/login
+     * @request POST:/api/Auth/login
+     * @secure
      */
     authLogin: (data: LoginRequestDto, params: RequestParams = {}) =>
       this.request<AuthResponseDto, ProblemDetails>({
-        path: `/api/controller/login`,
+        path: `/api/Auth/login`,
         method: "POST",
         body: data,
+        secure: true,
         type: ContentType.Json,
         format: "json",
         ...params,
@@ -639,11 +659,13 @@ export class Api<
      * @tags User
      * @name UserGetUsers
      * @request GET:/api/User
+     * @secure
      */
     userGetUsers: (params: RequestParams = {}) =>
       this.request<UserResponseDto[], any>({
         path: `/api/User`,
         method: "GET",
+        secure: true,
         format: "json",
         ...params,
       }),
@@ -654,12 +676,14 @@ export class Api<
      * @tags User
      * @name UserCreateUser
      * @request POST:/api/User
+     * @secure
      */
     userCreateUser: (data: CreateUserRequestDto, params: RequestParams = {}) =>
       this.request<UserResponseDto, ProblemDetails>({
         path: `/api/User`,
         method: "POST",
         body: data,
+        secure: true,
         type: ContentType.Json,
         format: "json",
         ...params,
