@@ -4,7 +4,7 @@ import { UserModal} from "../components/UserModal.tsx";
 import '../css/view.css';
 import {useNavigate} from "react-router-dom";
 
-import { MyApi } from "@/api/client.ts";
+import {MyApi, showApiError} from "@/api/client.ts";
 import {Role} from "@/api/Api.ts";
 
 interface TeamManagementViewProps {
@@ -36,7 +36,7 @@ export function TeamManagementView({role}: TeamManagementViewProps) {
             });
             setUsers(mapped);
         } catch (err) {
-            console.error('Failed to load users', err);
+            showApiError(err, 'Failed to load vacation agreements.');
         }
     };
     useEffect(() => {
@@ -72,7 +72,7 @@ export function TeamManagementView({role}: TeamManagementViewProps) {
             await loadUsers();
             setIsModalOpen(false);
         }catch (err: any) {
-            alert(err?.error?.message || 'Failed to create employee.');
+            showApiError(err, 'Failed to load vacation agreements.');
         }
     };
 

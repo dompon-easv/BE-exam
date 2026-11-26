@@ -22,7 +22,10 @@ export function LoginView({ onLoginSuccess, onHelpClick }: LoginViewProps) {
                 email: emailInput.trim(),
                 password: passwordInput,
             });
-            
+
+            if (response.data.id) {
+                localStorage.setItem('userId', response.data.id);
+            }
             
             onLoginSuccess({
                 name: response.data.name || 'User',

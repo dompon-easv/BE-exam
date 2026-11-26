@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { MyApi, showApiError } from '../api/client';
 import {Api, type ClosedDayDto} from '../api/Api';
 import { PresetCard } from '../components/PresetCard';
 import { PresetModal } from '../components/PresetModal';
@@ -6,7 +7,7 @@ import type { VacationAgreementResponseDto } from '../api/Api';
 import '../css/view.css';
 import {ClosedDaysCard} from "../components/ClosedDaysCard.tsx";
 
-const MyApi = new Api();
+//const MyApi = new Api();
 
 export function CompanyPresetsView() {
     const [agreements, setAgreements] = useState<VacationAgreementResponseDto[]>([]);
@@ -25,7 +26,9 @@ export function CompanyPresetsView() {
             const res = await MyApi.api.presetsGetAgreements();
             setAgreements(res.data);
         } catch (err: any) {
-            setErrorMessage(err?.detail || err?.title || 'Failed to load vacation agreements.');
+        const msg = err?.error?.detail || err?.error?.title || 'Failed to load vacation agreements.';
+        setErrorMessage(msg);
+        showApiError(err, 'Failed to load vacation agreements.');
         } finally {
             setLoading(false);
         }
@@ -39,8 +42,8 @@ export function CompanyPresetsView() {
                 (a, b) => new Date(a.date ?? '').getTime() - new Date(b.date ?? '').getTime()
             );
             setClosedDays(sorted);
-        } catch (err: any) {
-            console.error('Failed to load closed days:', err);
+        } catch (err) {
+            showApiError(err, 'Failed to load closed days.');
             setClosedDays([]);
         } finally {
             setClosedDaysLoading(false);
@@ -75,8 +78,8 @@ export function CompanyPresetsView() {
         try {
             await MyApi.api.presetsDeleteAgreement({ id: agreement.id });
             await loadAgreements(); // Reload in place
-        } catch (err: any) {
-            alert(err?.detail || err?.title || 'Failed to delete agreement.');
+        } catch (err) {
+            showApiError(err, 'Failed to delete agreement.');
         }
     };
 

@@ -7,10 +7,12 @@ export interface DaySchedule {
 
 export interface ContractDto {
     id: string;
-    badgeLabel: string; // e.g. "FUTURE CONTRACT", "CURRENT CONTRACT"
-    dateRange: string;  // e.g. "January 1, 2026 – December 31, 2026"
-    fte: number;        // e.g. 1.0
+    badgeLabel: string;
+    dateRange: string;  
+    fte: number;        
     schedule: DaySchedule[];
+    validFrom?: string;
+    validTo?: string;
 }
 
 interface ContractCardProps {

@@ -16,6 +16,60 @@ export enum Role {
   SystemOwner = "SystemOwner",
 }
 
+export interface ContractResponseDto {
+  /** @format guid */
+  id?: string;
+  /** @format guid */
+  userId?: string;
+  /** @format decimal */
+  fte?: number;
+  /** @format date */
+  validFrom?: string;
+  /** @format date */
+  validTo?: string | null;
+  workSchedules?: WorkScheduleResponseDto[];
+}
+
+export interface WorkScheduleResponseDto {
+  /** @format guid */
+  id?: string;
+  /** @format guid */
+  contractId?: string;
+  /** @format int32 */
+  weekday?: number;
+  /** @format decimal */
+  hours?: number;
+}
+
+export interface CreateContractDto {
+  /** @format guid */
+  userId?: string;
+  /** @format decimal */
+  fte?: number;
+  /** @format date */
+  validFrom?: string;
+  /** @format date */
+  validTo?: string | null;
+  workSchedules?: UpsertWorkScheduleDto[];
+}
+
+export interface UpsertWorkScheduleDto {
+  /** @format int32 */
+  weekday?: number;
+  /** @format decimal */
+  hours?: number;
+}
+
+export interface UpdateContractDto {
+  /** @format decimal */
+  fte?: number;
+  /** @format date */
+  validFrom?: string;
+  /** @format date */
+  validTo?: string | null;
+  workSchedules?: UpsertWorkScheduleDto[];
+}
+
 export interface VacationAgreementResponseDto {
   /** @format guid */
   id?: string;
@@ -428,6 +482,95 @@ export class Api<
   SecurityDataType extends unknown,
 > extends HttpClient<SecurityDataType> {
   api = {
+    /**
+     * No description
+     *
+     * @tags Contracts
+     * @name ContractsGetContracts
+     * @request GET:/api/Contracts/GetContracts
+     */
+    contractsGetContracts: (
+      query?: {
+        /** @format guid */
+        userId?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<ContractResponseDto[], any>({
+        path: `/api/Contracts/GetContracts`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Contracts
+     * @name ContractsCreateContract
+     * @request POST:/api/Contracts/CreateContract
+     */
+    contractsCreateContract: (
+      data: CreateContractDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<ContractResponseDto, any>({
+        path: `/api/Contracts/CreateContract`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Contracts
+     * @name ContractsUpdateContract
+     * @request PUT:/api/Contracts/UpdateContract
+     */
+    contractsUpdateContract: (
+      data: UpdateContractDto,
+      query?: {
+        /** @format guid */
+        id?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<ContractResponseDto, any>({
+        path: `/api/Contracts/UpdateContract`,
+        method: "PUT",
+        query: query,
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Contracts
+     * @name ContractsDeleteContract
+     * @request DELETE:/api/Contracts/DeleteContract
+     */
+    contractsDeleteContract: (
+      query?: {
+        /** @format guid */
+        id?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<boolean, any>({
+        path: `/api/Contracts/DeleteContract`,
+        method: "DELETE",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
     /**
      * No description
      *
