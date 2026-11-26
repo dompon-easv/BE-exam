@@ -2,8 +2,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace service.DTOs;
 
-public class WorkScheduleDto
-{
     public record WorkScheduleResponseDto(
         Guid Id,
         Guid ContractId,
@@ -18,4 +16,3 @@ public class WorkScheduleDto
         [Range(0.25, 24.0, ErrorMessage = "Shift lenght must be between 0.25 and 24 hours")]
         decimal Hours
     );
-}

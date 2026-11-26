@@ -10,10 +10,10 @@ namespace service;
 
 public interface IContractService
 {
-    Task<List<ContractDtos.ContractResponseDto>> GetContractsAsync(Guid userId);
-    Task<ContractDtos.ContractResponseDto> CreateContractAsync(ContractDtos.CreateContractDto dto);
+    Task<List<ContractResponseDto>> GetContractsAsync(Guid userId);
+    Task<ContractResponseDto> CreateContractAsync(CreateContractDto dto);
     Task<bool> DeleteContractAsync(Guid id);
-    Task<ContractDtos.ContractResponseDto> UpdateContractAsync(Guid id, ContractDtos.UpdateContractDto dto);
+    Task<ContractResponseDto> UpdateContractAsync(Guid id, UpdateContractDto dto);
     decimal CountWorkHours(decimal fte);
 }
 
@@ -21,12 +21,12 @@ public class ContractService(AppDataConnection db) : IContractService
 {
     private static readonly decimal _legalFte = 37.0m; //? m
     
-    public async Task<List<ContractDtos.ContractResponseDto>> GetContractsAsync(Guid userId)
+    public async Task<List<ContractResponseDto>> GetContractsAsync(Guid userId)
     {
         return await db.Contracts
             .Where(c => c.UserId == userId)
             .OrderBy(c => c.ValidFrom)
-            .Select(c => new ContractDtos.ContractResponseDto(
+            .Select(c => new ContractResponseDto(
             c.Id,
             c.UserId,
             c.Fte,
@@ -34,7 +34,7 @@ public class ContractService(AppDataConnection db) : IContractService
             c.ValidTo,
             db.WorkSchedules
                 .Where(w => w.ContractId == c.Id)
-                .Select(s => new WorkScheduleDto.WorkScheduleResponseDto(
+                .Select(s => new WorkScheduleResponseDto(
                     s.Id,
                     s.ContractId,
                     s.Weekday,
@@ -42,7 +42,7 @@ public class ContractService(AppDataConnection db) : IContractService
         )).ToListAsync();
     }
 
-    public async Task<ContractDtos.ContractResponseDto> CreateContractAsync(ContractDtos.CreateContractDto dto)
+    public async Task<ContractResponseDto> CreateContractAsync(CreateContractDto dto)
     {
         var user = await db.Users.FirstOrDefaultAsync(c => c.Id == dto.UserId);
         if (user == null) throw new KeyNotFoundException("User not found");
@@ -86,13 +86,13 @@ public class ContractService(AppDataConnection db) : IContractService
         await db.BulkCopyAsync(schedules);
         await transaction.CommitAsync();
 
-        return new ContractDtos.ContractResponseDto(
+        return new ContractResponseDto(
             contract.Id,
             contract.UserId,
             contract.Fte,
             contract.ValidFrom,
             contract.ValidTo,
-            schedules.Select(s => new WorkScheduleDto.WorkScheduleResponseDto(
+            schedules.Select(s => new WorkScheduleResponseDto(
                 s.Id,
                 s.ContractId,
                 s.Weekday,
@@ -114,7 +114,7 @@ public class ContractService(AppDataConnection db) : IContractService
         
     }
 
-    public async Task<ContractDtos.ContractResponseDto> UpdateContractAsync(Guid id, ContractDtos.UpdateContractDto dto)
+    public async Task<ContractResponseDto> UpdateContractAsync(Guid id, UpdateContractDto dto)
     {
         var today = DateOnly.FromDateTime(DateTime.Now);
         var contract = await db.Contracts.FirstOrDefaultAsync(c => c.Id == id);
@@ -190,14 +190,14 @@ public class ContractService(AppDataConnection db) : IContractService
         var updatedSchedules =  await db.WorkSchedules
             .Where(s => s.ContractId == id)
             .OrderBy(s => s.Weekday)
-            .Select(s => new WorkScheduleDto.WorkScheduleResponseDto(
+            .Select(s => new WorkScheduleResponseDto(
                 s.Id,
                 s.ContractId,
                 s.Weekday,
                 s.Hours))
             .ToListAsync();
         
-        return new ContractDtos.ContractResponseDto(
+        return new ContractResponseDto(
             contract.Id,
             contract.UserId,
             contract.Fte,

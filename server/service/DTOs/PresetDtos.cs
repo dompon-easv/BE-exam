@@ -2,8 +2,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace service.DTOs;
 
-public class PresetDtos
-{
     //for returning joined agreement and details
     public record VacationAgreementResponseDto(
     Guid Id,
@@ -141,6 +139,3 @@ public class PresetDtos
         string CountryCode,
         bool Fixed
     );
-
-
-}

@@ -2,8 +2,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace service.DTOs;
 
-public class ContractDtos
-{
 
     public record CreateContractDto(
         [Required(ErrorMessage = "User is required")]
@@ -14,7 +12,7 @@ public class ContractDtos
         DateOnly ValidFrom,
         DateOnly? ValidTo,
         [MinLength(1, ErrorMessage = "At least 1 working day is required")]
-        List<WorkScheduleDto.UpsertWorkScheduleDto> WorkSchedules
+        List<UpsertWorkScheduleDto> WorkSchedules
 
     );
 
@@ -24,7 +22,7 @@ public class ContractDtos
         decimal Fte,
         DateOnly ValidFrom,
         DateOnly? ValidTo,
-        List<WorkScheduleDto.WorkScheduleResponseDto> WorkSchedules
+        List<WorkScheduleResponseDto> WorkSchedules
     );
 
     public record UpdateContractDto(
@@ -34,6 +32,5 @@ public class ContractDtos
         DateOnly ValidFrom,
         DateOnly? ValidTo,
         [MinLength(1, ErrorMessage = "At least 1 working day is required")]
-        List<WorkScheduleDto.UpsertWorkScheduleDto> WorkSchedules
+        List<UpsertWorkScheduleDto> WorkSchedules
     );
-}

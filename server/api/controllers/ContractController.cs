@@ -9,22 +9,22 @@ namespace api.Controllers;
 public class ContractsController(IContractService contractService) : ControllerBase
 {
     [HttpGet(nameof(GetContracts))]
-    public async Task<List<ContractDtos.ContractResponseDto>> GetContracts(Guid userId)
+    public async Task<List<ContractResponseDto>> GetContracts(Guid userId)
     {
         return await contractService.GetContractsAsync(userId);
     }
 
     [HttpPost(nameof(CreateContract))]
-    public async Task<ContractDtos.ContractResponseDto> CreateContract(
-        [FromBody] ContractDtos.CreateContractDto dto)
+    public async Task<ContractResponseDto> CreateContract(
+        [FromBody] CreateContractDto dto)
     {
         return await contractService.CreateContractAsync(dto);
     }
 
     [HttpPut(nameof(UpdateContract))]
-    public async Task<ContractDtos.ContractResponseDto> UpdateContract(
+    public async Task<ContractResponseDto> UpdateContract(
         Guid id,
-        [FromBody] ContractDtos.UpdateContractDto dto)
+        [FromBody] UpdateContractDto dto)
     {
         return await contractService.UpdateContractAsync(id, dto);
     }

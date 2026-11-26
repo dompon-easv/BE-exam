@@ -10,14 +10,14 @@ public class PresetsController(IPresetService presetService) : ControllerBase
 {
 
     [HttpGet(nameof(GetAgreements))]
-    public async Task<List<PresetDtos.VacationAgreementResponseDto>> GetAgreements()
+    public async Task<List<VacationAgreementResponseDto>> GetAgreements()
     {
         return await presetService.GetAgreementAsync();
     }
 
     [HttpPost(nameof(CreateAgreement))]
-    public async Task<PresetDtos.VacationAgreementResponseDto> CreateAgreement(
-        [FromBody] PresetDtos.CreateVacationAgreementDto dto)
+    public async Task<VacationAgreementResponseDto> CreateAgreement(
+        [FromBody] CreateVacationAgreementDto dto)
     {
         return await presetService.CreateAgreementAsync(dto);
     }
@@ -25,7 +25,7 @@ public class PresetsController(IPresetService presetService) : ControllerBase
     [HttpPut(nameof(UpdateAgreement))]
     public async Task<bool> UpdateAgreement(
         Guid id, 
-        [FromBody] PresetDtos.UpdateVacationAgreementDto dto)
+        [FromBody] UpdateVacationAgreementDto dto)
     {
         return await presetService.UpdateAgreementAsync(id, dto);
     }
@@ -37,14 +37,14 @@ public class PresetsController(IPresetService presetService) : ControllerBase
     }
 
     [HttpGet(nameof(GetClosedDays))]
-    public async Task<List<PresetDtos.ClosedDayDto>> GetClosedDays()
+    public async Task<List<ClosedDayDto>> GetClosedDays()
     {
         return await presetService.GetClosedDayAsync();
     }
 
     [HttpPost(nameof(CreateClosedDay))]
-    public async Task<PresetDtos.ClosedDayDto> CreateClosedDay(
-        [FromBody] PresetDtos.UpsertClosedDayDto dto)
+    public async Task<ClosedDayDto> CreateClosedDay(
+        [FromBody] UpsertClosedDayDto dto)
     {
         return await presetService.CreateClosedDayAsync(dto);
     }
@@ -52,7 +52,7 @@ public class PresetsController(IPresetService presetService) : ControllerBase
     [HttpPut(nameof(UpdateClosedDay))]
     public async Task<bool> UpdateClosedDay(
         Guid id, 
-        [FromBody] PresetDtos.UpsertClosedDayDto dto)
+        [FromBody] UpsertClosedDayDto dto)
     {
         return await presetService.UpdateClosedDayAsync(id, dto);
     }
